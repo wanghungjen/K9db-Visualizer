@@ -9,6 +9,7 @@ import ReactFlow, {
 } from 'reactflow';
 
 import 'reactflow/dist/style.css';
+import ControlPanel from './components/BoardComponent/ControlPanelComponent/ControlPanel';
 
 const initialNodes = [
   { id: '1', position: { x: 0, y: 0 }, data: { label: '1' } },
@@ -31,7 +32,7 @@ export default function App() {
         onEdgesChange={onEdgesChange}
         onConnect={onConnect}
       >
-        <Controls />
+        <ControlPanel />
         <MiniMap />
         <Background variant="dots" gap={12} size={1} />
       </ReactFlow>
