@@ -1,21 +1,19 @@
-import React, { useState } from "react";
+import React from "react";
 import MyControlButton from "./MyControlButton";
-import { ControlButton, Controls } from "reactflow";
+import {Controls } from "reactflow";
 
 interface Props {
-  actions: string[];
-  header: string;
   onSelectAction: (action: string) => void;
 }
-function ControlPanel({ actions, header, onSelectAction }: Props) {
+
+function ControlPanel({onSelectAction }: Props) {
+    // const handlers = [func1, func2, ]
   return (
     <Controls>
-      <MyControlButton>
-        <div>1</div>
-      </MyControlButton>
-      <MyControlButton>
-        <div>2</div>
-      </MyControlButton>
+      {/* <MyControlButton name = "s"/> */}
+      <MyControlButton name = "s" action = {() => console.log("schema")}/>
+      <MyControlButton name = "v" action = {() => console.log("validate")}/>
+
     </Controls>
   );
 }
