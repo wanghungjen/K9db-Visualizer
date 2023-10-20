@@ -8,7 +8,7 @@ const MyControlButton = (props) => {
 
   return (
     <div>
-      <ControlButton onClick={() => props.action} title="action">
+      <ControlButton onClick={props.action} title="action">
         <div style={{ color: "black" }}>{props.name}</div>
       </ControlButton>
     </div>

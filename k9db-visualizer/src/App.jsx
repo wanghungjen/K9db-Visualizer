@@ -1,5 +1,6 @@
 import React, { useCallback } from "react";
 import MyControlButton from "./components/BoardComponent/ControlPanelComponent/MyControlButton";
+import "./App.css";
 import ReactFlow, {
   MiniMap,
   Controls,
@@ -12,6 +13,8 @@ import ReactFlow, {
 
 import "reactflow/dist/style.css";
 import ControlPanel from "./components/BoardComponent/ControlPanelComponent/ControlPanel";
+import SplitPane from "react-split-pane";
+import { resolveTypeReferenceDirective } from "typescript";
 
 const initialNodes = [
   { id: "1", position: { x: 0, y: 0 }, data: { label: "1" } },
@@ -29,18 +32,21 @@ export default function App() {
   );
 
   return (
-    <div style={{ width: "100vw", height: "100vh" }}>
-      <ReactFlow
-        nodes={nodes}
-        edges={edges}
-        onNodesChange={onNodesChange}
-        onEdgesChange={onEdgesChange}
-        onConnect={onConnect}
-      >
-        <ControlPanel />
-        <MiniMap />
-        <Background variant="dots" gap={12} size={1} />
-      </ReactFlow>
+    <div className="rowC">
+      <div>Pane 1 dfadfadfadsfadfads</div>
+      <div style={{ width: "100vw", height: "100vh" }}>
+        <ReactFlow
+          nodes={nodes}
+          edges={edges}
+          onNodesChange={onNodesChange}
+          onEdgesChange={onEdgesChange}
+          onConnect={onConnect}
+        >
+          <ControlPanel />
+          <MiniMap />
+          <Background variant="dots" gap={12} size={1} />
+        </ReactFlow>
+      </div>
     </div>
 
     // <MyControlButton name="hey" />
