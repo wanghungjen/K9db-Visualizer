@@ -1,11 +1,9 @@
 import React from "react";
-import {ControlButton } from "reactflow";
+import { ControlButton } from "reactflow";
 
 // Props : Name, Action
 
 const MyControlButton = (props) => {
-  const style = {};
-
   return (
     <div>
       <ControlButton onClick={props.action} title="action">

@@ -2,7 +2,6 @@ import React from "react";
 import MyControlButton from "./MyControlButton";
 import { Controls } from "reactflow";
 
-
 function ControlPanel() {
   return (
     <Controls>
