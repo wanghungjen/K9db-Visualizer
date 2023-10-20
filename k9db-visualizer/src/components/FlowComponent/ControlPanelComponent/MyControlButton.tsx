@@ -1,5 +1,5 @@
 import React from "react";
-import { Controls, ControlButton } from "reactflow";
+import {ControlButton } from "reactflow";
 
 // Props : Name, Action
 
