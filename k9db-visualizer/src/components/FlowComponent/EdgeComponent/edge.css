@@ -1,9 +1,86 @@
+/* Accesses Edge Style */
+.edgeaccesses:hover {
+  box-shadow: 0 0 2px 2px rgba(0, 0, 0, 0.08);
+}
+
+.edgeaccesses {
+  background-color: #F5FF90;
+  border-radius: 10px;
+  color: #000;
+  cursor: pointer;
+  font-weight:500;
+  padding: 3px 8px;
+  text-align: center;
+  transition: 200ms;
+  width: 120%;
+  box-sizing: border-box;
+  border: 0;
+  font-size: 10px;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+  font-family: "Gill Sans", sans-serif;
+  border: 1.2px solid #fff;
+}
+
+/* AccessedBy Edge Style */
+.edgeaccessedby:hover {
+  box-shadow: 0 0 2px 2px rgba(0, 0, 0, 0.08);
+}
+
+.edgeaccessedby {
+  background-color: #D6FFB7;
+  border-radius: 10px;
+  color: #000;
+  cursor: pointer;
+  font-weight:500;
+  padding: 3px 8px;
+  text-align: center;
+  transition: 200ms;
+  width: 120%;
+  box-sizing: border-box;
+  border: 0;
+  font-size: 10px;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+  font-family: "Gill Sans", sans-serif;
+  border: 1.2px solid #fff;
+}
+
+/* Owns Edge Style */
 .edgeowns:hover {
   box-shadow: 0 0 2px 2px rgba(0, 0, 0, 0.08);
 }
 
 .edgeowns {
-  background-color: #fff000;
+  background-color: #FF9F1C;
+  border-radius: 10px;
+  color: #000;
+  cursor: pointer;
+  font-weight:500;
+  padding: 3px 8px;
+  text-align: center;
+  transition: 200ms;
+  width: 120%;
+  box-sizing: border-box;
+  border: 0;
+  font-size: 10px;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+  font-family: "Gill Sans", sans-serif;
+  border: 1.2px solid #fff;
+}
+
+
+/* OwnedBy Edge Style */
+.edgeownedby:hover {
+  box-shadow: 0 0 2px 2px rgba(0, 0, 0, 0.08);
+}
+
+.edgeownedby {
+  background-color: #FFC15E;
   border-radius: 10px;
   color: #000;
   cursor: pointer;

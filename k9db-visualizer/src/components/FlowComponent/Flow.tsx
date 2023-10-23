@@ -12,9 +12,15 @@ import ControlPanel from "./ControlPanelComponent/ControlPanel";
 import initialNodes from "./Nodes.js";
 import initialEdges from "./Edges.js";
 import OwnsEdge from "./EdgeComponent/OwnsEdge";
+import OwnedByEdge from "./EdgeComponent/OwnedByEdge";
+import AccessesEdge from "./EdgeComponent/AccessesEdge";
+import AccessedByEdge from "./EdgeComponent/AccessedByEdge";
 
 const edgeTypes = {
   ownsedge: OwnsEdge,
+  ownedbyedge: OwnedByEdge,
+  accessesedge: AccessesEdge,
+  accessedbyedge: AccessedByEdge
 };
 
 

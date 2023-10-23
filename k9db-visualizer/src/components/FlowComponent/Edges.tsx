@@ -6,6 +6,24 @@ const ownsMarkerEnd = {
   height: 20,
 };
 
+const ownedbyMarkerEnd = {
+  type: MarkerType.ArrowClosed,
+  width: 18,
+  height: 20,
+};
+
+const accessesMarkerEnd = {
+  type: MarkerType.ArrowClosed,
+  width: 18,
+  height: 20,
+};
+
+const accessedbyMarkerEnd = {
+  type: MarkerType.ArrowClosed,
+  width: 18,
+  height: 20,
+};
+
 const edgeStyle = {
   strokeWidth: 1.2,
 }
@@ -26,22 +44,25 @@ const Edges = () => {
         id: 'edges-e2-2a',
         source: 'edges-2',
         target: 'edges-2a',
-        type: 'smoothstep',
-        label: 'smoothstep edge',
+        type: 'ownedbyedge',
+        markerEnd: ownedbyMarkerEnd,
+        style: edgeStyle
       },
       {
         id: 'edges-e2-3',
         source: 'edges-2',
         target: 'edges-3',
-        type: 'step',
-        label: 'step edge',
+        type: 'accessesedge',
+        markerEnd: accessesMarkerEnd,
+        style: edgeStyle
       },
       {
         id: 'edges-e3-4',
         source: 'edges-3',
         target: 'edges-4',
-        type: 'straight',
-        label: 'straight edge',
+        type: 'accessedbyedge',
+        markerEnd: accessedbyMarkerEnd,
+        style: edgeStyle
       },
       {
         id: 'edges-e3-3a',
