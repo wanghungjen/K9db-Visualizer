@@ -1,0 +1,23 @@
+.edgeowns:hover {
+  box-shadow: 0 0 2px 2px rgba(0, 0, 0, 0.08);
+}
+
+.edgeowns {
+  background-color: #fff000;
+  border-radius: 10px;
+  color: #000;
+  cursor: pointer;
+  font-weight:500;
+  padding: 3px 8px;
+  text-align: center;
+  transition: 200ms;
+  width: 120%;
+  box-sizing: border-box;
+  border: 0;
+  font-size: 10px;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+  font-family: "Gill Sans", sans-serif;
+  border: 1.2px solid #fff;
+}

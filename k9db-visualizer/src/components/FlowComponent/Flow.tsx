@@ -9,28 +9,37 @@ import ReactFlow, {
 } from "reactflow";
 import ControlPanel from "./ControlPanelComponent/ControlPanel";
 
-const initialNodes = [
-  { id: "1", position: { x: 0, y: 0 }, data: { label: "1" } },
-  { id: "2", position: { x: 0, y: 100 }, data: { label: "2" } },
-];
-const initialEdges = [{ id: "e1-2", source: "1", target: "2" }];
+import initialNodes from "./Nodes.js";
+import initialEdges from "./Edges.js";
+import OwnsEdge from "./EdgeComponent/OwnsEdge";
+
+const edgeTypes = {
+  ownsedge: OwnsEdge,
+};
+
 
 const Flow = () => {
-  const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
+
+  const [nodes, , onNodesChange] = useNodesState(initialNodes);
   const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
 
   const onConnect = useCallback(
     (params) => setEdges((eds) => addEdge(params, eds)),
-    [setEdges]
+    []
   );
+
   return (
     <div style={{ width: "100vw", height: "100vh", alignSelf: "center" }}>
       <ReactFlow
         nodes={nodes}
         edges={edges}
+        edgeTypes={edgeTypes}
         onNodesChange={onNodesChange}
         onEdgesChange={onEdgesChange}
         onConnect={onConnect}
+        snapToGrid={true}
+        fitView
+        attributionPosition="top-right"
       >
         <ControlPanel />
         <MiniMap />
