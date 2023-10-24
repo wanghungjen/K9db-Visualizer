@@ -15,9 +15,9 @@ npm install
 npm run dev
 ```
 
-For init, you should be able to see the following template:
+For the current phase, you should able to see this page:
 
-![Init Phase](readme_imgs/init.png)
+<img width="1512" alt="image" src="https://github.com/mingchao-zhang/K9db-Visualizer/assets/57975957/e321a3fa-d5d0-463c-94aa-52097963009e">
 
 ## Canvas TODO
 
