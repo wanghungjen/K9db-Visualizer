@@ -6,16 +6,43 @@ export default function NonDataSubjectnode({ data }: NodeProps) {
   return (
     <>
       <Handle
-        type="target"
+        id="own"
+        type="source"
         position={Position.Top}
-        style={{ background: "#555" }}
+        style={{ left: 20, background: "transparent", border: "transparent" }}
+        isConnectable={false}
+      />
+      <Handle
+        id="access"
+        type="source"
+        position={Position.Top}
+        style={{
+          right: 20,
+          left: "auto",
+          background: "transparent",
+          border: "transparent",
+        }}
         isConnectable={false}
       />
       <div className="datasubjectnode">{data.label}</div>
+
       <Handle
-        type="source"
+        id="own"
+        type="target"
         position={Position.Bottom}
-        style={{ background: "#555" }}
+        style={{ left: 20, background: "transparent", border: "transparent" }}
+        isConnectable={false}
+      />
+      <Handle
+        id="access"
+        type="target"
+        position={Position.Bottom}
+        style={{
+          right: 20,
+          left: "auto",
+          background: "transparent",
+          border: "transparent",
+        }}
         isConnectable={false}
       />
     </>

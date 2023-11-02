@@ -1,16 +1,15 @@
-import React, { useCallback } from "react";
+import React from "react";
 import "reactflow/dist/style.css";
 import ReactFlow, {
   MiniMap,
   Background,
   useNodesState,
   useEdgesState,
-  addEdge,
 } from "reactflow";
 import ControlPanel from "./ControlPanelComponent/ControlPanel";
 
-import initialNodes from "./Nodes.js";
-import initialEdges from "./Edges.js";
+import Nodes from "./Nodes.js";
+import Edges from "./Edges.js";
 import OwnsEdge from "./EdgeComponent/OwnsEdge";
 import OwnedByEdge from "./EdgeComponent/OwnedByEdge";
 import AccessesEdge from "./EdgeComponent/AccessesEdge";
@@ -30,14 +29,22 @@ const nodeTypes = {
   nondatasubjectnode: NonDataSubjectNode,
 };
 
-const Flow = () => {
-  const [nodes, , onNodesChange] = useNodesState(initialNodes);
-  const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
-
-  const onConnect = useCallback(
-    (params) => setEdges((eds) => addEdge(params, eds)),
-    []
+const Flow = ({
+  handleParsedSchema,
+  parsedDataSubject,
+  parsedEdges,
+  parsedOtherTables,
+}) => {
+  const [nodes, setNodes, onNodesChange] = useNodesState(
+    Nodes(parsedDataSubject, parsedOtherTables)
   );
+  const [edges, setEdges, onEdgesChange] = useEdgesState(Edges(parsedEdges));
+
+  const handleStateChange = (dataSubject, otherTables, edges) => {
+    console.log("state changed...");
+    setNodes(Nodes(dataSubject, otherTables));
+    setEdges(Edges(edges));
+  };
 
   return (
     <div style={{ width: "100vw", height: "100vh", alignSelf: "center" }}>
@@ -48,12 +55,14 @@ const Flow = () => {
         nodeTypes={nodeTypes}
         onNodesChange={onNodesChange}
         onEdgesChange={onEdgesChange}
-        onConnect={onConnect}
         snapToGrid={true}
         fitView
         attributionPosition="top-right"
       >
-        <ControlPanel />
+        <ControlPanel
+          handleParsedSchema={handleParsedSchema}
+          handleStateChange={handleStateChange}
+        />
         <MiniMap
           nodeColor={(n) => {
             if (n.type === "datasubjectnode") return "#423E37";

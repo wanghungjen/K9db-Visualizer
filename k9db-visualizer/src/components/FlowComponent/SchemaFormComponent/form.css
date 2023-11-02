@@ -1,0 +1,23 @@
+.form {
+    position: relative;
+    font-size: 14px;
+    font-family: "Gill Sans", sans-serif;
+    text-align: center;
+    padding-top: 1em;
+    padding-bottom: 2em;
+    padding: auto;
+    width: 400px;
+    font-weight: 500;
+    width: fit-content;
+}
+
+.inputbox {
+    position: relative;
+    max-width: 175%;
+    width: fit-content;
+    font-size: 14px;
+    font-family: "Gill Sans", sans-serif;
+    padding-left: 10px;
+    padding-top: 10px;
+    font-weight: 500;
+}

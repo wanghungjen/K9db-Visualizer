@@ -7,9 +7,9 @@ export default function DataSubjectNode({ data }: NodeProps) {
     <>
       <div className="datasubjectnode">{data.label}</div>
       <Handle
-        type="source"
+        type="target"
         position={Position.Bottom}
-        style={{ background: "#555" }}
+        style={{ background: "transparent", border: "transparent" }}
         isConnectable={false}
       />
     </>

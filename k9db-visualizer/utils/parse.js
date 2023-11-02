@@ -1,3 +1,6 @@
+import { Annotations } from "./interface.js"
+
+// Helper Functions
 /* returns the text before the first '(', left parenthesis
    for example, "stories(id)" => "stories" and
    "users(id) => "users"
@@ -11,7 +14,7 @@ function textBeforeLeftParen(text) {
     }
 }
 
-/* return a dictionary with parsed tokens. For example
+/* return an Edge object. For example
 story_id int not null owned_by stories(id) =>
 {
     annotation: 'owned_by',
@@ -20,12 +23,12 @@ story_id int not null owned_by stories(id) =>
     edgeName: 'story_id'
 }
 */
-function getNodesAndEdgeDict(inputString, currTableName) {
+function parseEdge(inputString, currTableName) {
     let tokens = inputString.split(' ')
     tokens = tokens.filter(token => token !== '')
 
     // Check if the string contains "owned_by" or "accessed_by"
-    const byKeywords = ["owned_by", "accessed_by"]
+    const byKeywords = [Annotations.OwnedBy, Annotations.AccessedBy]
     for (const byKeyword of byKeywords) {
         if (inputString.includes(byKeyword)) {
             return {
@@ -38,7 +41,7 @@ function getNodesAndEdgeDict(inputString, currTableName) {
     }
 
     // Check if the string contains "owns" or "accesses"
-    const keywords = ["owns", "accesses"]
+    const keywords = [Annotations.Owns, Annotations.Accesses]
     for (const keyword of keywords) {
         if (inputString.includes(keyword)) {
             return {
@@ -49,15 +52,12 @@ function getNodesAndEdgeDict(inputString, currTableName) {
             }
         }
     }
-
+    // no annotation
     return {}
 }
 
-/* Given a create SQL statement with k9db annotations,
-returns an array of dictionaries For example, 
-[{ annotation: 'data_subject', tableName: 'users' },
- { annotation: 'owned_by', from: 'stories', to: 'user', edgeName: 'author' },
- ...]
+/* Given one create SQL statement with k9db annotations, returns a list of Node
+or Edges
 */
 function parseCreateStatement(inputString) {
     // 1: Remove extra spaces and convert to lowercase
@@ -72,73 +72,51 @@ function parseCreateStatement(inputString) {
     console.assert(tableName.length > 0, "Invalid table name")
 
     // 2: Check if the annotation, 'data_subject', exists
-    if (inputString.includes("data_subject")) {
+    if (inputString.includes(Annotations.DataSubject)) {
         return [{
-          annotation: "data_subject",
-          tableName: tableName
+            annotation: "data_subject",
+            tableName: tableName
         }];
     }
-  
+
     // 3: Extract text between the first '(' and the last ')'
     //    Split the text by comma (',')
     const firstParenIdx = inputString.indexOf('(')
     const lastParenIdx = inputString.lastIndexOf(')')
-    if (firstParenIdx === -1 || lastParenIdx === -1 || 
+    if (firstParenIdx === -1 || lastParenIdx === -1 ||
         lastParenIdx <= firstParenIdx) {
-      return null; // No valid match found
+        return null; // No valid match found
     }
     const textBetween = inputString.substring(firstParenIdx + 1, lastParenIdx);
     const splitText = textBetween.split(',');
 
     // 4: construct the result array
-    let res = []
+    let res = [] // an array of Edge objects
     for (const subStr of splitText) {
-        let dict = getNodesAndEdgeDict(subStr, tableName)
+        let dict = parseEdge(subStr, tableName)
         if (Object.keys(dict).length > 0) {
             res.push(dict)
         }
     }
     return res
-  }
-  
-function parse(statement) {
-    if (statement.toLowerCase().indexOf("create") !== -1) {
-        return parseCreateStatement(statement)
-    }
 }
 
 //-----------------------------------------------------------------------------
-// TESTS
-const createStatements = [
-    `CREATE DATA_SUBJECT TABLE users (
-        id INT PRIMARY KEY
-    );`,
-    `CREATE TABLE stories (
-        id INT PRIMARY KEY,
-        title TEXT,
-        author INT NOT NULL OWNED_BY user(id) 
-    );`,
-    `CREATE TABLE tags (
-        id INT PRIMARY KEY,
-        tag TEXT
-    );`,
-    `CREATE TABLE taggings (
-        id INT PRIMARY KEY,
-        story_id INT NOT NULL OWNED_BY stories(id), 
-        tag_id INT NOT NULL ACCESSES tag(id)
-    );`,
-    `CREATE TABLE messages (
-        id INT PRIMARY KEY, 
-        body text, 
-        sender INT NOT NULL OWNED_BY user(id), 
-        receiver INT NOT NULL OWNED_BY user(id), 
-        ON DEL sender ANON (sender),
-        ON DEL receiver ANON (receiver)
-    );`
-]
-
-for (const statement of createStatements) {
-    let parsedRes = parse(statement)
-    console.log(parsedRes)
+/* Parse API
+Given an array of SQL create statements with K9db annotations, 
+returns a list of Node and Edge objects. If any statement is invalid, 
+empty array will be returned. */
+export default function parse(input) {
+    let statements = input.split(/(?=CREATE)/).map(statement => statement.replace(/\\n/g, ''));
+    var res = []
+    for (const statement of statements) {
+        if (statement.toLowerCase().indexOf("create") !== -1) {
+            res.push(...parseCreateStatement(statement))
+        } else {
+            let errMsg = "The following statement is not a create statement: "
+            console.log(errMsg, statement)
+            return []
+        }
+    }
+    return res
 }
-  

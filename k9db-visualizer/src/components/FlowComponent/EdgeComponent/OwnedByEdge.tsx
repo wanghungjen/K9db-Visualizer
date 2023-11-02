@@ -21,7 +21,7 @@ export default function OwnedByEdge({
   sourcePosition,
   targetPosition,
   style = {},
-  markerEnd
+  markerEnd,
 }: EdgeProps) {
   const [edgePath, labelX, labelY] = getBezierPath({
     sourceX,
@@ -32,15 +32,9 @@ export default function OwnedByEdge({
     targetPosition,
   });
 
- 
-
   return (
     <>
-      <BaseEdge
-        path={edgePath}
-        markerEnd={markerEnd}
-        style={style}
-      />
+      <BaseEdge path={edgePath} markerEnd={markerEnd} style={style} />
       <EdgeLabelRenderer>
         <div
           style={{
