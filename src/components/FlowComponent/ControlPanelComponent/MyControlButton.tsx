@@ -23,17 +23,17 @@ const MyControlButton = ({ name, handleParsedSchema, handleStateChange }) => {
 
   return (
     <div>
-      {name === "v" ? (
-        <ControlButton onClick={handleShow} title="action">
-          <PiCheckFatFill />
+      {name === "validation" ? (
+        <ControlButton onClick={handleShow} title={name}>
+          <PiCheckFatFill style={{ color: 'orange' }} />
         </ControlButton>
       ) : (
-        <ControlButton onClick={handleShow} title="action">
-          <PiUploadSimpleBold />
+        <ControlButton onClick={handleShow} title={name}>
+          <PiUploadSimpleBold style={{ color: 'orange' }} />
         </ControlButton>
       )}
 
-      {name === "v" ? (
+      {name === "validation" ? (
         <MyModal
           show={show}
           onHide={handleClose}
