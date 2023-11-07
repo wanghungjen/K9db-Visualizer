@@ -113,9 +113,8 @@ export default function parse(input) {
         if (statement.toLowerCase().indexOf("create") !== -1) {
             res.push(...parseCreateStatement(statement))
         } else {
-            let errMsg = "The following statement is not a create statement: "
-            console.log(errMsg, statement)
-            return []
+            // non-create statements will be ignored
+            continue
         }
     }
     return res
