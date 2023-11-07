@@ -1,99 +1,155 @@
 import { Annotations } from "./interface.js"
 
-// Helper Functions
-/* returns the text before the first '(', left parenthesis
-   for example, "stories(id)" => "stories" and
-   "users(id) => "users"
-*/
-function textBeforeLeftParen(text) {
-    let leftParenIdx = text.indexOf('(')
-    if (leftParenIdx === -1) {
-        return text
-    } else {
-        return text.substring(0, leftParenIdx)
+
+// Given an array of SQL create statements as an input string,
+// return a list of sanitized sentences where in each sentence,
+// extra spaces/tabs are removed and all charactes are lowered
+function getSanitizedStatements(inputStr) {
+    // split the input string by the `CREATE` keyword into an array of sentences
+    let statements = inputStr.trim().split(/(?=CREATE)/)
+    let sanitized = []
+    for (let statement of statements) {
+        statement = statement.toLowerCase()
+        if (statement.includes("create")) {
+            // remove extra spaces and tabs
+            statement = statement.replace(/[\n\t\r]/g, '')
+            sanitized.push(statement)
+        }
     }
+
+    return sanitized
 }
 
-/* return an Edge object. For example
-story_id int not null owned_by stories(id) =>
-{
-    annotation: 'owned_by',
-    from: 'taggings',
-    to: 'stories',
-    edgeName: 'story_id'
+// Given a create statement, extract text between the first '(' and the last ')'
+// split the text by comma into a list of sentences
+function parseSentences(statement) {
+    let firstParenIdx = statement.indexOf('(')
+    let lastParenIdx = statement.lastIndexOf(')')
+    if (firstParenIdx === -1 || lastParenIdx === -1 ||
+        lastParenIdx <= firstParenIdx) {
+        console.assert(false, "Invalid create statement: ", statement)
+        return null; // No valid match found
+    }
+    let textBetween = statement.substring(firstParenIdx + 1, lastParenIdx);
+    let sentences = textBetween.split(',').map((sentence) => sentence.trim())
+    return sentences
 }
+
+// parse the table name of a create statement
+function parseTableName(statement) {
+    let tokens = statement.split(' ')
+    let tableKeywordIdx = tokens.indexOf("table")
+    console.assert(tableKeywordIdx !== -1, 
+        "No table keyword in the statement: ", statement)
+    return tokens[tableKeywordIdx + 1]
+}
+
+// parse the primary key of a create statement
+function parsePrimaryKey(statement) {
+    let sentences = parseSentences(statement)
+    for (const sentence of sentences) {
+        if (sentence.includes("primary key")) {
+            // the first word in this sentence will be the primary key name
+            let tokens = sentence.trim().split(' ')
+            return tokens[0]
+        }
+    }
+    console.assert(false, "No primary key found in ", statement)
+}
+
+// Given an array of SQL create statements,
+// return a hashmap that maps table names to their primary keys;
+// used for determining the cardinality of relations between two tables
+function getPrimaryKeyMap(statements) {
+    let res = {}
+    for (let statement of statements) {
+        let tableName = parseTableName(statement)
+        console.assert(!(tableName in res),
+            "The table is created more than once: ", tableName)
+        let primaryKeyName = parsePrimaryKey(statement)
+        res[tableName] = primaryKeyName
+    }
+    return res
+}
+
+/* Given a sentence, return an Edge object. For example,
+given
+    sentence = "story_id int not null owned_by stories(id)",
+    currTable = "stories"
+return
+    {
+        annotation: 'owned_by',
+        from: 'taggings',
+        to: 'stories',
+        edgeName: 'story_id'
+    }
 */
-function parseEdge(inputString, currTableName) {
-    let tokens = inputString.split(' ')
-    tokens = tokens.filter(token => token !== '')
+function parseEdge(sentence, currTable, pkMap) {
+    let tokens = sentence.split(' ').filter((token) => token !== '')
+    let currField = tokens[0]
+    // if the current field is the primary key of the current table,
+    // the cardinality is 1. If not, the cardinality is n
+    let currCardinality = pkMap[currTable] === currField ? '1' : 'n'
 
-    // Check if the string contains "owned_by" or "accessed_by"
+    // for example, "stories(id)" => ["stories", "id"]
+    function parseTableAndFieldNames(text) {
+        let idx = text.indexOf('(')
+        // log(idx)
+        console.assert(idx !== -1, "Invalid sentence: ", sentence)
+        return [text.substring(0, idx), text.substring(idx + 1, text.length - 1)]
+    }
+
+    // if the sentence contains a keyword, it's an edge
     const byKeywords = [Annotations.OwnedBy, Annotations.AccessedBy]
-    for (const byKeyword of byKeywords) {
-        if (inputString.includes(byKeyword)) {
-            return {
-                annotation: byKeyword,
-                from: currTableName,
-                to: textBeforeLeftParen(tokens.at(-1)),
-                edgeName: tokens.at(0)
+    const nonByKeywords = [Annotations.Owns, Annotations.Accesses]
+    for (const keyword of [...byKeywords, ...nonByKeywords]) {
+        if (tokens.includes(keyword)) {
+            let [otherTable, otherField] = parseTableAndFieldNames(tokens.at(-1))
+            let otherCardinality = pkMap[otherTable] === otherField ? '1' : 'n'
+            if (byKeywords.includes(keyword)) { // "owned_by" or "accessed_by"
+                return {
+                    annotation: keyword,
+                    from: currTable,
+                    fromCardinality: currCardinality,
+                    to: otherTable,
+                    toCardinality: otherCardinality,
+                    edgeName: currField
+                }
+            } else { // "owns" or "accesses"
+                return {
+                    annotation: keyword,
+                    from: otherTable,
+                    fromCardinality: otherCardinality,
+                    to: currTable,
+                    toCardinality: currCardinality,
+                    edgeName: currField
+                }
             }
         }
     }
 
-    // Check if the string contains "owns" or "accesses"
-    const keywords = [Annotations.Owns, Annotations.Accesses]
-    for (const keyword of keywords) {
-        if (inputString.includes(keyword)) {
-            return {
-                annotation: keyword,
-                from: textBeforeLeftParen(tokens.at(-1)),
-                to: currTableName,
-                edgeName: tokens.at(0)
-            }
-        }
-    }
     // no annotation
     return {}
 }
 
-/* Given one create SQL statement with k9db annotations, returns a list of Node
-or Edges
-*/
-function parseCreateStatement(inputString) {
-    // 1: Remove extra spaces and convert to lowercase
-    inputString = inputString.replace(/\s+/g, ' ').replace(/[\t\r\n]+/g, '')
-    inputString = inputString.trim().toLowerCase()
+// Given one create SQL statement with k9db annotations and a primary key map
+// returns a list of Node or Edge objects
+function parseCreateStatement(statement, pkMap) {
+    let tableName = parseTableName(statement)
 
-    // 2: Extract the table name
-    let tokens = inputString.split(' ')
-    let tableIdx = tokens.indexOf("table")
-    console.assert(tableIdx < tokens.length, "No table name")
-    let tableName = tokens[tableIdx + 1]
-    console.assert(tableName.length > 0, "Invalid table name")
-
-    // 2: Check if the annotation, 'data_subject', exists
-    if (inputString.includes(Annotations.DataSubject)) {
+    // check if the annotation, 'data_subject', exists
+    if (statement.includes(Annotations.DataSubject)) {
         return [{
             annotation: "data_subject",
             tableName: tableName
         }];
     }
 
-    // 3: Extract text between the first '(' and the last ')'
-    //    Split the text by comma (',')
-    const firstParenIdx = inputString.indexOf('(')
-    const lastParenIdx = inputString.lastIndexOf(')')
-    if (firstParenIdx === -1 || lastParenIdx === -1 ||
-        lastParenIdx <= firstParenIdx) {
-        return null; // No valid match found
-    }
-    const textBetween = inputString.substring(firstParenIdx + 1, lastParenIdx);
-    const splitText = textBetween.split(',');
-
-    // 4: construct the result array
-    let res = [] // an array of Edge objects
-    for (const subStr of splitText) {
-        let dict = parseEdge(subStr, tableName)
+    // construct an array of Edge objects
+    let res = []
+    const sentences = parseSentences(statement)
+    for (const sentence of sentences) {
+        let dict = parseEdge(sentence, tableName, pkMap)
         if (Object.keys(dict).length > 0) {
             res.push(dict)
         }
@@ -101,21 +157,19 @@ function parseCreateStatement(inputString) {
     return res
 }
 
-//-----------------------------------------------------------------------------
 /* Parse API
-Given an array of SQL create statements with K9db annotations, 
-returns a list of Node and Edge objects. If any statement is invalid, 
-empty array will be returned. */
-export default function parse(input) {
-    let statements = input.split(/(?=CREATE)/).map(statement => statement.replace(/\\n/g, ''));
+Given an array of SQL create statements with K9db annotations as an input string,
+returns a list of Node and Edge objects. 
+If any statement is invalid, empty array will be returned. */
+export default function parse(inputStr) {
+    let statements = getSanitizedStatements(inputStr)
+    // console.log("sanitized: ", statements)
+    let pkMap = getPrimaryKeyMap(statements)
+    console.log("Primary key map: ", pkMap)
+
     var res = []
     for (const statement of statements) {
-        if (statement.toLowerCase().indexOf("create") !== -1) {
-            res.push(...parseCreateStatement(statement))
-        } else {
-            // non-create statements will be ignored
-            continue
-        }
+        res.push(...parseCreateStatement(statement, pkMap))
     }
     return res
 }

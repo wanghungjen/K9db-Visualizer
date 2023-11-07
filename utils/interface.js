@@ -6,6 +6,7 @@ export const Annotations = {
     Accesses: "accesses"
 }
 
+/*
 export class Node {
     constructor(tableName, isDataSubject) {
         this.tableName = tableName
@@ -21,3 +22,4 @@ export class Edge {
         this.fieldName = fieldName
     }
 }
+*/
