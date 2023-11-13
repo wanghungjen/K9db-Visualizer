@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   BaseEdge,
   EdgeLabelRenderer,
@@ -21,7 +21,7 @@ export default function OwnsEdge({
   sourcePosition,
   targetPosition,
   style = {},
-  markerEnd
+  markerEnd,
 }: EdgeProps) {
   const [edgePath, labelX, labelY] = getBezierPath({
     sourceX,
@@ -32,15 +32,11 @@ export default function OwnsEdge({
     targetPosition,
   });
 
- 
+  const [isShown, setIsShown] = useState(false);
 
   return (
     <>
-      <BaseEdge
-        path={edgePath}
-        markerEnd={markerEnd}
-        style={style}
-      />
+      <BaseEdge path={edgePath} markerEnd={markerEnd} style={style} />
       <EdgeLabelRenderer>
         <div
           style={{
@@ -53,9 +49,15 @@ export default function OwnsEdge({
           }}
           className="nodrag nopan"
         >
-          <button className="edgeowns" onClick={() => onEdgeClick(id)}>
+          <button
+            className="edgeowns"
+            onClick={() => onEdgeClick(id)}
+            onMouseEnter={() => setIsShown(true)}
+            onMouseLeave={() => setIsShown(false)}
+          >
             OWNS
           </button>
+          {isShown && <div>Owns Placeholder</div>}
         </div>
       </EdgeLabelRenderer>
     </>

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   BaseEdge,
   EdgeLabelRenderer,
@@ -32,6 +32,8 @@ export default function OwnedByEdge({
     targetPosition,
   });
 
+  const [isShown, setIsShown] = useState(false);
+
   return (
     <>
       <BaseEdge path={edgePath} markerEnd={markerEnd} style={style} />
@@ -47,9 +49,15 @@ export default function OwnedByEdge({
           }}
           className="nodrag nopan"
         >
-          <button className="edgeownedby" onClick={() => onEdgeClick(id)}>
+          <button
+            className="edgeownedby"
+            onClick={() => onEdgeClick(id)}
+            onMouseEnter={() => setIsShown(true)}
+            onMouseLeave={() => setIsShown(false)}
+          >
             OWNED_BY
           </button>
+          {isShown && <div>OwnedBy Placeholder</div>}
         </div>
       </EdgeLabelRenderer>
     </>

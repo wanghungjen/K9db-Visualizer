@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   BaseEdge,
   EdgeLabelRenderer,
@@ -31,6 +31,7 @@ export default function AccessedByEdge({
     targetY,
     targetPosition,
   });
+  const [isShown, setIsShown] = useState(false);
 
   return (
     <>
@@ -47,9 +48,15 @@ export default function AccessedByEdge({
           }}
           className="nodrag nopan"
         >
-          <button className="edgeaccessedby" onClick={() => onEdgeClick(id)}>
+          <button
+            className="edgeaccessedby"
+            onClick={() => onEdgeClick(id)}
+            onMouseEnter={() => setIsShown(true)}
+            onMouseLeave={() => setIsShown(false)}
+          >
             ACCESSED_BY
           </button>
+          {isShown && <div>AccessedBy Placeholder</div>}
         </div>
       </EdgeLabelRenderer>
     </>
