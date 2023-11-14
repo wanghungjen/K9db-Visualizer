@@ -29,7 +29,7 @@ export default function OwnsEdge({
     targetPosition,
   };
 
-  const [path, labelX, labelY] = getSpecialPath(edgePathParams, data);
+  const [path, labelX, labelY] = getSpecialPath(edgePathParams, data.offset);
   const [isShown, setIsShown] = useState(false);
 
   return (
@@ -40,7 +40,7 @@ export default function OwnsEdge({
           style={{
             position: "absolute",
             transform: `translate(-50%, -50%) translate(${
-              labelX + data / 2
+              labelX + data.offset / 2
             }px,${labelY}px)`,
             fontSize: 12,
             // everything inside EdgeLabelRenderer has no pointer events by default
@@ -49,7 +49,11 @@ export default function OwnsEdge({
           }}
           className="nodrag nopan"
         >
-          {isShown && <div>Owns Placeholder</div>}
+          {isShown && (
+            <div>
+              {data.fromCardinality} to {data.toCardinality}
+            </div>
+          )}
           <button
             className="edgeowns"
             onClick={() => onEdgeClick(id)}

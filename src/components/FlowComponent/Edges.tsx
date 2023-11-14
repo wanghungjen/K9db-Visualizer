@@ -70,7 +70,7 @@ export const initEdges = [
     targetHandle: "own",
     markerEnd: markerEnd,
     style: edgeStyle,
-    data: -60,
+    data: { offset: -60, fromCardinality: "n", toCardinality: "1" },
   },
   {
     id: "edges-e1-2-2",
@@ -81,7 +81,7 @@ export const initEdges = [
     targetHandle: "own",
     markerEnd: markerEnd,
     style: edgeStyle,
-    data: 60,
+    data: { offset: 60, fromCardinality: "n", toCardinality: "1" },
   },
   {
     id: "edges-e2-2a",
@@ -92,7 +92,7 @@ export const initEdges = [
     type: "ownedbyedge",
     markerEnd: markerEnd,
     style: edgeStyle,
-    data: -60,
+    data: { offset: -60, fromCardinality: "n", toCardinality: "1" },
   },
   {
     id: "edges-e2-3",
@@ -103,7 +103,7 @@ export const initEdges = [
     type: "accessesedge",
     markerEnd: markerEnd,
     style: edgeStyle,
-    data: -60,
+    data: { offset: -60, fromCardinality: "n", toCardinality: "1" },
   },
   {
     id: "edges-e3-4",
@@ -114,7 +114,7 @@ export const initEdges = [
     type: "accessedbyedge",
     markerEnd: markerEnd,
     style: edgeStyle,
-    data: 30,
+    data: { offset: 30, fromCardinality: "n", toCardinality: "1" },
   },
 ];
 
@@ -148,7 +148,11 @@ const Edges = function (edges: any[]) {
         type: getFlowEdgeType(e.annotation),
         markerEnd: markerEnd,
         style: edgeStyle,
-        data: posOffsets[i],
+        data: {
+          offset: posOffsets[i],
+          fromCardinality: e.fromCardinality,
+          toCardinality: e.toCardinality,
+        },
       });
     }
   });
