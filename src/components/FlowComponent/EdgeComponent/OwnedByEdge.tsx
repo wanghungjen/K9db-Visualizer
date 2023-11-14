@@ -1,12 +1,7 @@
 import React, { useState } from "react";
-import {
-  BaseEdge,
-  EdgeLabelRenderer,
-  EdgeProps,
-  getBezierPath,
-} from "reactflow";
-
+import { BaseEdge, EdgeLabelRenderer, EdgeProps } from "reactflow";
 import "./edge.css";
+import { getSpecialPath } from "./getSpecialPath";
 
 const onEdgeClick = (id) => {
   console.log("clicked owns edge: " + id);
@@ -22,26 +17,30 @@ export default function OwnedByEdge({
   targetPosition,
   style = {},
   markerEnd,
+  data,
 }: EdgeProps) {
-  const [edgePath, labelX, labelY] = getBezierPath({
+  const edgePathParams = {
     sourceX,
     sourceY,
     sourcePosition,
     targetX,
     targetY,
     targetPosition,
-  });
+  };
 
+  const [path, labelX, labelY] = getSpecialPath(edgePathParams, data);
   const [isShown, setIsShown] = useState(false);
 
   return (
     <>
-      <BaseEdge path={edgePath} markerEnd={markerEnd} style={style} />
+      <BaseEdge path={path} markerEnd={markerEnd} style={style} />
       <EdgeLabelRenderer>
         <div
           style={{
             position: "absolute",
-            transform: `translate(-50%, -50%) translate(${labelX}px,${labelY}px)`,
+            transform: `translate(-50%, -50%) translate(${
+              labelX + data / 2
+            }px,${labelY}px)`,
             fontSize: 12,
             // everything inside EdgeLabelRenderer has no pointer events by default
             // if you have an interactive element, set pointer-events: all
@@ -49,6 +48,7 @@ export default function OwnedByEdge({
           }}
           className="nodrag nopan"
         >
+          {isShown && <div>OwnedBy Placeholder</div>}
           <button
             className="edgeownedby"
             onClick={() => onEdgeClick(id)}
@@ -57,7 +57,6 @@ export default function OwnedByEdge({
           >
             OWNED_BY
           </button>
-          {isShown && <div>OwnedBy Placeholder</div>}
         </div>
       </EdgeLabelRenderer>
     </>

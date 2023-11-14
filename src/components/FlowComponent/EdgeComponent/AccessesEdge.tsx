@@ -1,12 +1,8 @@
 import React, { useState } from "react";
-import {
-  BaseEdge,
-  EdgeLabelRenderer,
-  EdgeProps,
-  getBezierPath,
-} from "reactflow";
+import { BaseEdge, EdgeLabelRenderer, EdgeProps } from "reactflow";
 
 import "./edge.css";
+import { getSpecialPath } from "./getSpecialPath";
 
 const onEdgeClick = (id) => {
   console.log("clicked owns edge: " + id);
@@ -22,20 +18,23 @@ export default function AccessesEdge({
   targetPosition,
   style = {},
   markerEnd,
+  data, //offset?
 }: EdgeProps) {
-  const [edgePath, labelX, labelY] = getBezierPath({
+  const edgePathParams = {
     sourceX,
     sourceY,
     sourcePosition,
     targetX,
     targetY,
     targetPosition,
-  });
+  };
+
+  const [path, labelX, labelY] = getSpecialPath(edgePathParams, data);
   const [isShown, setIsShown] = useState(false);
 
   return (
     <>
-      <BaseEdge path={edgePath} markerEnd={markerEnd} style={style} />
+      <BaseEdge path={path} markerEnd={markerEnd} style={style} />
       <EdgeLabelRenderer>
         <div
           style={{
@@ -48,6 +47,7 @@ export default function AccessesEdge({
           }}
           className="nodrag nopan"
         >
+          {isShown && <div>Accesses Placeholder</div>}
           <button
             className="edgeaccesses"
             onClick={() => onEdgeClick(id)}
@@ -56,7 +56,6 @@ export default function AccessesEdge({
           >
             ACCESSES
           </button>
-          {isShown && <div>Accesses Placeholder</div>}
         </div>
       </EdgeLabelRenderer>
     </>

@@ -19,7 +19,6 @@ export default function App() {
     setDatasubject(res[0]);
     setOtherTables(res[1]);
     setEdges(res[2]);
-    console.log(edges);
   };
 
   const handleSelectedItem = (selectedItem) => {

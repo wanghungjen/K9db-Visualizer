@@ -41,7 +41,6 @@ const Flow = ({
   const [edges, setEdges, onEdgesChange] = useEdgesState(Edges(parsedEdges));
 
   const handleStateChange = (dataSubject, otherTables, edges) => {
-    console.log("state changed...");
     setNodes(Nodes(dataSubject, otherTables));
     setEdges(Edges(edges));
   };
