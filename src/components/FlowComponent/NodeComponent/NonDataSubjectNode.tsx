@@ -9,19 +9,7 @@ export default function NonDataSubjectnode({ data }: NodeProps) {
         id="own"
         type="source"
         position={Position.Top}
-        style={{ left: 20, background: "transparent", border: "transparent" }}
-        isConnectable={false}
-      />
-      <Handle
-        id="access"
-        type="source"
-        position={Position.Top}
-        style={{
-          right: 20,
-          left: "auto",
-          background: "transparent",
-          border: "transparent",
-        }}
+        style={{ background: "transparent", border: "transparent" }}
         isConnectable={false}
       />
       <div className="datasubjectnode">{data.label}</div>
@@ -30,19 +18,7 @@ export default function NonDataSubjectnode({ data }: NodeProps) {
         id="own"
         type="target"
         position={Position.Bottom}
-        style={{ left: 20, background: "transparent", border: "transparent" }}
-        isConnectable={false}
-      />
-      <Handle
-        id="access"
-        type="target"
-        position={Position.Bottom}
-        style={{
-          right: 20,
-          left: "auto",
-          background: "transparent",
-          border: "transparent",
-        }}
+        style={{ background: "transparent", border: "transparent" }}
         isConnectable={false}
       />
     </>

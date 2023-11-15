@@ -1,12 +1,8 @@
-import React from "react";
-import {
-  BaseEdge,
-  EdgeLabelRenderer,
-  EdgeProps,
-  getBezierPath,
-} from "reactflow";
+import React, { useState } from "react";
+import { BaseEdge, EdgeLabelRenderer, EdgeProps } from "reactflow";
 
 import "./edge.css";
+import { getSpecialPath } from "./getSpecialPath";
 
 const onEdgeClick = (id) => {
   console.log("clicked owns edge: " + id);
@@ -22,24 +18,29 @@ export default function AccessedByEdge({
   targetPosition,
   style = {},
   markerEnd,
+  data, //offset?
 }: EdgeProps) {
-  const [edgePath, labelX, labelY] = getBezierPath({
+  const edgePathParams = {
     sourceX,
     sourceY,
     sourcePosition,
     targetX,
     targetY,
     targetPosition,
-  });
+  };
 
+  const [path, labelX, labelY] = getSpecialPath(edgePathParams, data);
+  const [isShown, setIsShown] = useState(false);
   return (
     <>
-      <BaseEdge path={edgePath} markerEnd={markerEnd} style={style} />
+      <BaseEdge path={path} markerEnd={markerEnd} style={style} />
       <EdgeLabelRenderer>
         <div
           style={{
             position: "absolute",
-            transform: `translate(-50%, -50%) translate(${labelX}px,${labelY}px)`,
+            transform: `translate(-50%, -50%) translate(${
+              labelX - data / 2
+            }px,${labelY}px)`,
             fontSize: 12,
             // everything inside EdgeLabelRenderer has no pointer events by default
             // if you have an interactive element, set pointer-events: all
@@ -47,7 +48,13 @@ export default function AccessedByEdge({
           }}
           className="nodrag nopan"
         >
-          <button className="edgeaccessedby" onClick={() => onEdgeClick(id)}>
+          {isShown && <div>AccessedBy Placeholder</div>}
+          <button
+            className="edgeaccessedby"
+            onClick={() => onEdgeClick(id)}
+            onMouseEnter={() => setIsShown(true)}
+            onMouseLeave={() => setIsShown(false)}
+          >
             ACCESSED_BY
           </button>
         </div>

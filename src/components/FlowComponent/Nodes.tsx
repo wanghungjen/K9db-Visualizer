@@ -9,25 +9,25 @@ const initNodes = [
     id: "2",
     type: "nondatasubjectnode",
     data: { label: "example_table1", handleCount: 2 },
-    position: { x: 150, y: 100 },
+    position: { x: 150, y: 200 },
   },
   {
     id: "3",
     type: "nondatasubjectnode",
     data: { label: "example_table2", handleCount: 2 },
-    position: { x: 0, y: 180 },
+    position: { x: 0, y: 400 },
   },
   {
     id: "4",
     type: "nondatasubjectnode",
     data: { label: "example_table3", handleCount: 2 },
-    position: { x: 250, y: 200 },
+    position: { x: 250, y: 400 },
   },
   {
     id: "5",
     type: "nondatasubjectnode",
     data: { label: "example_table4", handleCount: 2 },
-    position: { x: 400, y: 300 },
+    position: { x: 150, y: 600 },
   },
 ];
 
@@ -43,6 +43,7 @@ const Nodes = function (dataSubject: any[], otherTables: any[]) {
       type: "datasubjectnode",
       data: { label: sub.tableName, handleCount: 2 },
       position: { x: sub.posX, y: sub.posY },
+      draggable: false,
     });
   }
 
@@ -52,6 +53,7 @@ const Nodes = function (dataSubject: any[], otherTables: any[]) {
       type: "nondatasubjectnode",
       data: { label: sub.tableName, handleCount: 2 },
       position: { x: sub.posX, y: sub.posY },
+      draggable: false,
     });
   }
 
