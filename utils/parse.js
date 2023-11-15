@@ -137,15 +137,15 @@ function parseCreateStatement(statement, pkMap) {
     let tableName = parseTableName(statement)
 
     // check if the annotation, 'data_subject', exists
+    let res = []
     if (statement.includes(Annotations.DataSubject)) {
-        return [{
+        res.push({
             annotation: "data_subject",
             tableName: tableName
-        }];
+        })
     }
 
     // construct an array of Edge objects
-    let res = []
     const sentences = parseSentences(statement)
     for (const sentence of sentences) {
         let dict = parseEdge(sentence, tableName, pkMap)

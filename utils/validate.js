@@ -1,4 +1,4 @@
-import { getGraph, topoSort } from './graph.js';
+import { getAllNodes, topoSort } from './graph.js';
 import { isEdgeObject, InvalidGraphTypes } from "./types.js"
 
 /* Detect if there's a cycle in the graph. If there's a cycle,
@@ -9,8 +9,7 @@ have one and only one outgoing edge that's in the cycle.
 
 returns true to indicate there's a cycle; edge object in a cycle will have errMsg added
 */
-function detectCycle(G, parsedObjects) {
-    console.log(parsedObjects)
+function detectCycle(parsedObjects) {
     // map fromNodes to edge objects
     let fromNodeMap = {}
     let resObjects = []
@@ -23,7 +22,7 @@ function detectCycle(G, parsedObjects) {
         }
     }
     // get the set of nodes that are not in the cycle
-    let topoSortedList = topoSort(G)
+    let topoSortedList = topoSort(parsedObjects)
     let nonCycleSet = new Set()
     for (const level of topoSortedList) {
         for (const node of level) {
@@ -31,26 +30,29 @@ function detectCycle(G, parsedObjects) {
         }
     }
 
-    let allNodes = Object.keys(G)
-    console.log(nonCycleSet, allNodes)
+    let allNodes = getAllNodes(parsedObjects)
+    let hasCycle = false
     for (const node of allNodes) {
         if (!nonCycleSet.has(node)) {
             // add the cycle error message to the object corresponding to this node
-            console.log("Hi")
+            hasCycle = true
+            let obj = fromNodeMap[node]
+            obj["errorMsg"] = "This edge is in a cycle"
+            resObjects.push(obj)
         }
     }
+
+    return [hasCycle, resObjects]
 }
 
 // Given a list of parsed objects (edge objects and node objects)
 // return a list of objects with potential error messages added to the objects
 export function validate(parsedObjects) {
-    let G = getGraph(parsedObjects)
-
     // 1. Check if any cycle exists
-    // let [hasCycle, modifiedObjects] = detectCycle(G, parsedObjects)
-    // if (hasCycle) {
-    //     return [InvalidGraphTypes.Cycle, modifiedObjects]
-    // }
+    let [hasCycle, modifiedObjects] = detectCycle(parsedObjects)
+    if (hasCycle) {
+        return [InvalidGraphTypes.Cycle, modifiedObjects]
+    }
 
     // 2. TODO: Check if there's no data subject
 

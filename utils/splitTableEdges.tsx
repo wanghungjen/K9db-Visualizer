@@ -1,24 +1,16 @@
-import { getGraph, topoSort } from "./graph.js";
-import { calculateCoordinates } from "./coordinate.js";
+import { getCoords } from "./interface.js"
 
-const splitTablesEdges = function (parsedSchema) {
-  var graph = getGraph(parsedSchema);
-  var sortedNodes = topoSort(graph);
+const splitTablesEdges = function (parsedObjects) {
   var canvasWidth = 1000;
-  var canvasHeight = 1000;
-  var coordsMap = calculateCoordinates(
-    sortedNodes,
-    graph,
-    canvasWidth,
-    canvasHeight
-  );
+  var canvasHeight = 500;
+  let [modifiedObjects, coordsMap] = getCoords(parsedObjects, canvasWidth, canvasHeight)
   let dataSubjects: any[] = [];
   let otherTables: any[] = [];
 
   //storing edge objects. ex: {annotation: 'owned_by', from: 'stories', to: 'user', edgeName: 'author'}
   let edges: any[] = [];
 
-  for (const row of parsedSchema) {
+  for (const row of modifiedObjects) {
     if (row.annotation === "data_subject") {
       dataSubjects.push(row.tableName);
     } else {
@@ -26,7 +18,7 @@ const splitTablesEdges = function (parsedSchema) {
     }
   }
 
-  for (const row of parsedSchema) {
+  for (const row of modifiedObjects) {
     if (row.annotation !== "data_subject") {
       if (!dataSubjects.includes(row.from) && !otherTables.includes(row.from)) {
         otherTables.push(row.from);
