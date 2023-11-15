@@ -6,10 +6,6 @@ export const Annotations = {
     Accesses: "accesses"
 }
 
-export function isEdgeObject(object) {
-    return object.annotation !== Annotations.DataSubject
-}
-
 // what type of problem does the graph have
 export const InvalidGraphTypes = Object.freeze({
     None: "None",
@@ -18,3 +14,13 @@ export const InvalidGraphTypes = Object.freeze({
     MultipleDataSubjects: "MultipleDataSubjects",
     DataSubjectOutEdge: "DataSubjectOutEdge"
 })
+
+export function isEdgeObject(object) {
+    return object.annotation !== Annotations.DataSubject
+}
+
+// check if an edge is a problematic edge
+export function hasErrorMsg(object) {
+    return isEdgeObject(object) && "errorMsg" in object && 
+            object["errorMsg"].length > 0
+}

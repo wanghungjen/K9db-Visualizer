@@ -79,16 +79,38 @@ export const twoNodesCycle1 = `
 
 // C -> A <-> B
 export const twoNodesCycle2 = `
-CREATE DATA_SUBJECT TABLE A (
-    id INT PRIMARY KEY,
-    a1 INT NOT NULL OWNED_BY B(id)
-);
-CREATE TABLE B (
-    id INT PRIMARY KEY,
-    a2 INT NOT NULL OWNED_BY A(id)
-);
-CREATE TABLE C (
-    id INT PRIMARY KEY,
-    c1 INT NOT NULL OWNED_BY A(id)
-);
+    CREATE DATA_SUBJECT TABLE A (
+        id INT PRIMARY KEY,
+        a1 INT NOT NULL OWNED_BY B(id)
+    );
+    CREATE TABLE B (
+        id INT PRIMARY KEY,
+        b1 INT NOT NULL OWNED_BY A(id)
+    );
+    CREATE TABLE C (
+        id INT PRIMARY KEY,
+        c1 INT NOT NULL OWNED_BY A(id)
+    );
+`
+
+// D -> A 
+//      ↑  ↘
+//      C ← B
+export const threeNodesCycle = `
+    CREATE DATA_SUBJECT TABLE A (
+        id INT PRIMARY KEY,
+        a1 INT NOT NULL OWNED_BY B(id)
+    );
+    CREATE TABLE B (
+        id INT PRIMARY KEY,
+        b1 INT NOT NULL OWNED_BY C(id)
+    );
+    CREATE TABLE C (
+        id INT PRIMARY KEY,
+        c1 INT NOT NULL OWNED_BY A(id)
+    );
+    CREATE TABLE D (
+        id INT PRIMARY KEY,
+        d1 INT NOT NULL OWNED_BY A(id)
+    );
 `

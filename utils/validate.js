@@ -33,13 +33,13 @@ function detectCycle(parsedObjects) {
     let allNodes = getAllNodes(parsedObjects)
     let hasCycle = false
     for (const node of allNodes) {
+        let obj = fromNodeMap[node]
         if (!nonCycleSet.has(node)) {
             // add the cycle error message to the object corresponding to this node
             hasCycle = true
-            let obj = fromNodeMap[node]
             obj["errorMsg"] = "This edge is in a cycle"
-            resObjects.push(obj)
         }
+        resObjects.push(obj)
     }
 
     return [hasCycle, resObjects]

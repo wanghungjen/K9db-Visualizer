@@ -38,6 +38,9 @@ function getGraph(dependencyGraph) {
     return G
 }
 
+export function getGraphFromObjects(objects) {
+    return getGraph(getDependencyGraph(objects))
+}
 
 /* Given a set of unique nodes and a list of edges objects, return a list of
 lists of nodes like res = [[A], [B, C], [D]] where A (data subject) has 
