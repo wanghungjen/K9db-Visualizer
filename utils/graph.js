@@ -13,7 +13,7 @@ export function getGraph(parsedObjects) {
     }
 
     // create an adjacency list
-    const G = new Map();
+    const G = {};
     for (const node of nodes) {
         // G.set(node, new Set())
         G[node] = new Set()
@@ -31,7 +31,7 @@ inDegree 0, B and C have inDegree 1 and D has inDegree 2.
 If the graph is invalid (has a cycle), returns an empty list */
 export function topoSort(G) {
     // create an inNodes graph (reverse graph) from the input graph
-    const inNodes = new Map();
+    const inNodes = {};
     for (const node in G) {
         inNodes[node] = new Set()
     }
@@ -64,10 +64,7 @@ export function topoSort(G) {
         res.push(q)
         q = nextQ
     }
-    // 4. check if the graph is a DAG
-    if (processedNodeCt < inNodes.keys().length) {
-        return []
-    } else {
-        return res
-    }
+    // 4. returns processed node in topological order; 
+    // If there's a cycle, only return nodes that are not in the cycle
+    return res
 }

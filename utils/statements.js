@@ -53,3 +53,25 @@ export const ownCloudStatements = `
         share_with_group INT ACCESSED_BY group(id)
     );
 `
+
+export const flowAgainstDataSubject1 = `
+    CREATE DATA_SUBJECT TABLE A (
+        id INT PRIMARY KEY,
+        a_a INT NOT NULL OWNED_BY B(id)
+    );
+    CREATE TABLE B (
+        id INT PRIMARY KEY,
+
+    );
+`
+
+export const twoNodesCycle = `
+    CREATE DATA_SUBJECT TABLE A (
+        id INT PRIMARY KEY,
+        a_a INT NOT NULL OWNED_BY B(id)
+    );
+    CREATE TABLE B (
+        id INT PRIMARY KEY,
+        b1 INT NOT NULL OWNED_BY A(id)
+    );
+`

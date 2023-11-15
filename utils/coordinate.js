@@ -1,3 +1,6 @@
+import { InvalidGraphTypes } from "./types.js"
+import { getGraph, topoSort } from './graph.js';
+
 // height between two levels is roughly 100 px's
 var MAXNODEWIDTH = 200
 var MAXNODEHEIGHT = 30
@@ -12,9 +15,13 @@ function topLeftAlign(centerX, centerY, nodeW, nodeH) {
 
 // Return a hashmap that maps table names to coordinates.
 // The coordinates indicate the center positions of nodes
-export function calculateCoordinates(sortedNodes, G, canvasW, canvasH) {
-    var coords = new Map()
+export function calculateCoordinates(invalidType, objects, canvasW, canvasH) {
+    // check invalid type and decide how to place nodes accordingly
+    if (invalidType === InvalidGraphTypes.None) {
+        var sortedNodes = topoSort(getGraph(objects))
+    }
 
+    var coords = {}
     // calculate the height assigned to each level
     var heightPerLevel = canvasH / sortedNodes.length
 
