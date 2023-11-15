@@ -49,7 +49,7 @@ export default function AccessedByEdge({
           className="nodrag nopan"
         >
           {isShown && (
-            <div>
+            <div className="popup">
               {data.fromCardinality} to {data.toCardinality}
             </div>
           )}
