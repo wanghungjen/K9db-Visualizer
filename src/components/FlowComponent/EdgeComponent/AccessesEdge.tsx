@@ -29,7 +29,7 @@ export default function AccessesEdge({
     targetPosition,
   };
 
-  const [path, labelX, labelY] = getSpecialPath(edgePathParams, data);
+  const [path, labelX, labelY] = getSpecialPath(edgePathParams, data.offset);
   const [isShown, setIsShown] = useState(false);
 
   return (
@@ -39,7 +39,9 @@ export default function AccessesEdge({
         <div
           style={{
             position: "absolute",
-            transform: `translate(-50%, -50%) translate(${labelX}px,${labelY}px)`,
+            transform: `translate(-50%, -50%) translate(${
+              labelX - data.offset / 2
+            }px,${labelY}px)`,
             fontSize: 12,
             // everything inside EdgeLabelRenderer has no pointer events by default
             // if you have an interactive element, set pointer-events: all
@@ -47,7 +49,11 @@ export default function AccessesEdge({
           }}
           className="nodrag nopan"
         >
-          {isShown && <div>Accesses Placeholder</div>}
+          {isShown && (
+            <div className="popup">
+              {data.fromCardinality} to {data.toCardinality}
+            </div>
+          )}
           <button
             className="edgeaccesses"
             onClick={() => onEdgeClick(id)}
