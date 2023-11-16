@@ -4,11 +4,11 @@
 }
 
 .edgeaccesses {
-  background-color: #F5FF90;
+  background-color: #f5ff90;
   border-radius: 10px;
   color: #000;
   cursor: pointer;
-  font-weight:500;
+  font-weight: 500;
   padding: 3px 8px;
   text-align: center;
   transition: 200ms;
@@ -29,11 +29,11 @@
 }
 
 .edgeaccessedby {
-  background-color: #D6FFB7;
+  background-color: #d6ffb7;
   border-radius: 10px;
   color: #000;
   cursor: pointer;
-  font-weight:500;
+  font-weight: 500;
   padding: 3px 8px;
   text-align: center;
   transition: 200ms;
@@ -54,11 +54,11 @@
 }
 
 .edgeowns {
-  background-color: #FF9F1C;
+  background-color: #ff9f1c;
   border-radius: 10px;
   color: #000;
   cursor: pointer;
-  font-weight:500;
+  font-weight: 500;
   padding: 3px 8px;
   text-align: center;
   transition: 200ms;
@@ -72,7 +72,6 @@
   font-family: "Gill Sans", sans-serif;
   border: 1.2px solid #fff;
 }
-
 
 /* OwnedBy Edge Style */
 .edgeownedby:hover {
@@ -80,11 +79,11 @@
 }
 
 .edgeownedby {
-  background-color: #FFC15E;
+  background-color: #ffc15e;
   border-radius: 10px;
   color: #000;
   cursor: pointer;
-  font-weight:500;
+  font-weight: 500;
   padding: 3px 8px;
   text-align: center;
   transition: 200ms;
@@ -97,4 +96,12 @@
   touch-action: manipulation;
   font-family: "Gill Sans", sans-serif;
   border: 1.2px solid #fff;
+}
+
+.popup {
+  text-align: center;
+  background-color: white;
+  color: black;
+  justify-content: center;
+  width: 120%;
 }

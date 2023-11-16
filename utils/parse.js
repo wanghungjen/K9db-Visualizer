@@ -1,5 +1,4 @@
-import { Annotations } from "./interface.js"
-
+import { Annotations } from "./types.js"
 
 // Given an array of SQL create statements as an input string,
 // return a list of sanitized sentences where in each sentence,
@@ -138,15 +137,15 @@ function parseCreateStatement(statement, pkMap) {
     let tableName = parseTableName(statement)
 
     // check if the annotation, 'data_subject', exists
+    let res = []
     if (statement.includes(Annotations.DataSubject)) {
-        return [{
+        res.push({
             annotation: "data_subject",
             tableName: tableName
-        }];
+        })
     }
 
     // construct an array of Edge objects
-    let res = []
     const sentences = parseSentences(statement)
     for (const sentence of sentences) {
         let dict = parseEdge(sentence, tableName, pkMap)
@@ -159,17 +158,15 @@ function parseCreateStatement(statement, pkMap) {
 
 /* Parse API
 Given an array of SQL create statements with K9db annotations as an input string,
-returns a list of Node and Edge objects. 
-If any statement is invalid, empty array will be returned. */
-export default function parse(inputStr) {
+returns a list of Node and Edge objects. */
+export function parse(inputStr) {
+    // 1. parse the input string into a list of edge/node objects
     let statements = getSanitizedStatements(inputStr)
-    // console.log("sanitized: ", statements)
     let pkMap = getPrimaryKeyMap(statements)
-    console.log("Primary key map: ", pkMap)
 
-    var res = []
+    var parsedObjects = []
     for (const statement of statements) {
-        res.push(...parseCreateStatement(statement, pkMap))
+        parsedObjects.push(...parseCreateStatement(statement, pkMap))
     }
-    return res
+    return parsedObjects
 }

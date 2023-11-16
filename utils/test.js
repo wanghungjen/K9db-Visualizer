@@ -1,19 +1,17 @@
-import parse from './parse.js';
-import { getGraph, topoSort } from './graph.js';
-import { calculateCoordinates } from './coordinate.js'
-import { lobstersStatements, ownCloudStatements } from './statements.js'
+import { getObjectsAndCoords } from './interface.js';
+import * as statements from './statements.js'
 
-// get graph and topologically-sorted nodes
-var parsedObjects = parse(lobstersStatements)
-// var parsedObjects = parse(ownCloudStatements)
-console.log(parsedObjects)
-var graph = getGraph(parsedObjects)
-var sortedNodes = topoSort(graph)
-console.log(graph)
-console.log(sortedNodes)
+let canvasWidth = 1000
+let canvasHeight = 1000
 
-// calculate coordinates
-var canvasWidth = 1000
-var canvasHeight = 1000
-var coords = calculateCoordinates(sortedNodes, graph, canvasWidth, canvasHeight)
-console.log(coords)
+// test lobstersStatements
+// let [objects, coordsMap] = getObjectsAndCoords(statements.lobstersStatements, canvasWidth, canvasHeight)
+
+// test cycles of two nodes
+// let [objects, coordsMap] = getObjectsAndCoords(statements.twoNodesCycle1, canvasWidth, canvasHeight)
+// let [objects, coordsMap] = getObjectsAndCoords(statements.twoNodesCycle2, canvasWidth, canvasHeight)
+
+// test cycles of three nodes
+let [objects, coordsMap] = getObjectsAndCoords(statements.threeNodesCycle, canvasWidth, canvasHeight)
+// console.log(objects)
+// console.log(coordsMap)

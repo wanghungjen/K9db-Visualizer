@@ -1,25 +1,22 @@
-export const Annotations = {
-    DataSubject: "data_subject",
-    OwnedBy: "owned_by",
-    AccessedBy: "accessed_by",
-    Owns: "owns",
-    Accesses: "accesses"
+import { parse } from "./parse.js"
+import { calculateCoordinates } from './coordinate.js'
+import { validate } from "./validate.js"
+
+// return a list of parsed objects and a coordinate map that maps nodes to coordinates
+export function getCoords(parsedObjects, canvasW, canvasH) {
+    // 1. Build a graph and validate if the graph is valid.
+    // If not, the `errMsg` will be added to problem edges
+    let [invalidType, modifiedObjects] = validate(parsedObjects)
+    console.log("Interface 10: ", invalidType, modifiedObjects)
+
+    // 2. Pass objects with potentially error messages to the coordinate calculation function
+    let coordsMap = calculateCoordinates(invalidType, modifiedObjects, canvasW, canvasH)
+
+    console.log("Interface 15: ", coordsMap)
+    return [modifiedObjects, coordsMap]
 }
 
-/*
-export class Node {
-    constructor(tableName, isDataSubject) {
-        this.tableName = tableName
-        this.isDataSubject = isDataSubject
-    }
+// return a list of parsed objects and a coordinate map that maps nodes to coordinates
+export function getObjectsAndCoords(inputStr, canvasW, canvasH) {
+    return getCoords(parse(inputStr), canvasW, canvasH)
 }
-
-export class Edge {
-    constructor(annotation, fromNode, toNode, fieldName) {
-        this.annotation = annotation,
-        this.fromNode = fromNode,
-        this.toNode = toNode,
-        this.fieldName = fieldName
-    }
-}
-*/
