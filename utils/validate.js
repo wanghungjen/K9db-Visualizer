@@ -1,5 +1,5 @@
 import { getAllNodes, topoSort } from './graph.js';
-import { isEdgeObject, InvalidGraphTypes } from "./types.js"
+import { isEdgeObject, InvalidGraphTypes, isDataSubject } from "./types.js"
 
 /* Detect if there's a cycle in the graph. If there's a cycle,
 add error messages to all edges that belong to this cycle.
@@ -45,18 +45,42 @@ function detectCycle(parsedObjects) {
     return [hasCycle, resObjects]
 }
 
+function detectMultipleDataSubjects(parsedObjects) {
+    let dataSubjectCt = 0
+    for (const obj of parsedObjects) {
+        if (isDataSubject(obj)) {
+            dataSubjectCt++
+        }
+    }
+    if (dataSubjectCt === 1) {
+        return [false, parsedObjects]
+    } else {
+        for (let i = 0; i < parsedObjects.length; i++) {
+            if (isDataSubject(parsedObjects[i])) {
+                parsedObjects[i]["errorMsg"] = "The node is one of multiple data subjects"
+            }
+        }
+        return [true, parsedObjects]
+    }
+    
+}
+
 // Given a list of parsed objects (edge objects and node objects)
 // return a list of objects with potential error messages added to the objects
 export function validate(parsedObjects) {
     // 1. Check if any cycle exists
-    let [hasCycle, modifiedObjects] = detectCycle(parsedObjects)
-    if (hasCycle) {
+    let [hasError, modifiedObjects] = detectCycle(parsedObjects)
+    if (hasError) {
         return [InvalidGraphTypes.Cycle, modifiedObjects]
     }
 
     // 2. TODO: Check if there's no data subject
 
     // 3. TODO: Check if there's more than one data subject
+    [hasError, modifiedObjects] = detectMultipleDataSubjects(parsedObjects)
+    if (hasError) {
+        return [InvalidGraphTypes.MultipleDataSubjects, modifiedObjects]
+    }
 
     // 4. TODO: Check if all edges flow to the data subject
 

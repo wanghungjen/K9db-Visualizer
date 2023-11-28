@@ -12,6 +12,6 @@ let canvasHeight = 1000
 // let [objects, coordsMap] = getObjectsAndCoords(statements.twoNodesCycle2, canvasWidth, canvasHeight)
 
 // test cycles of three nodes
-let [objects, coordsMap] = getObjectsAndCoords(statements.threeNodesCycle, canvasWidth, canvasHeight)
+let [objects, coordsMap] = getObjectsAndCoords(statements.multipleDataSubjects2, canvasWidth, canvasHeight)
 // console.log(objects)
 // console.log(coordsMap)

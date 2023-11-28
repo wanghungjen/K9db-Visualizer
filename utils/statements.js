@@ -114,3 +114,31 @@ export const threeNodesCycle = `
         d1 INT NOT NULL OWNED_BY A(id)
     );
 `
+
+// A (DataSubject) -> B (DataSubject)
+export const multipleDataSubjects1 = `
+    CREATE DATA_SUBJECT TABLE A (
+        id INT PRIMARY KEY,
+        a1 INT NOT NULL OWNED_BY B(id)
+    );
+    CREATE DATA_SUBJECT TABLE B (
+        id INT PRIMARY KEY,
+        b1 INT NOT NULL
+    );
+`
+
+// A (DataSubject) -> B (DataSubject) -> C
+export const multipleDataSubjects2 = `
+    CREATE DATA_SUBJECT TABLE A (
+        id INT PRIMARY KEY,
+        a1 INT NOT NULL OWNED_BY B(id)
+    );
+    CREATE DATA_SUBJECT TABLE B (
+        id INT PRIMARY KEY,
+        b1 INT NOT NULL OWNED_BY C(id)
+    );
+    CREATE TABLE C (
+        id INT PRIMARY KEY,
+        c1 INT NOT NULL
+    );
+`

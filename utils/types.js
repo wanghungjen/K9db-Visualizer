@@ -19,6 +19,10 @@ export function isEdgeObject(object) {
     return object.annotation !== Annotations.DataSubject
 }
 
+export function isDataSubject(object) {
+    return object.annotation === Annotations.DataSubject
+}
+
 // check if an edge is a problematic edge
 export function hasErrorMsg(object) {
     return isEdgeObject(object) && "errorMsg" in object && 
