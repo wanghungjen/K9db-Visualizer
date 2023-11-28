@@ -16,7 +16,7 @@ const MyControlButton = ({ name, handleParsedSchema, handleStateChange }) => {
   const handleSubmit = () => {
     setShow(false);
     let parsedSchema = parse(schema.content);
-    console.log(schema, parsedSchema)
+    console.log(schema, parsedSchema);
     handleParsedSchema(parsedSchema);
     let splitRes = splitTablesEdges(parsedSchema);
     handleStateChange(splitRes[0], splitRes[1], splitRes[2]);
@@ -26,11 +26,11 @@ const MyControlButton = ({ name, handleParsedSchema, handleStateChange }) => {
     <div>
       {name === "validation" ? (
         <ControlButton onClick={handleShow} title={name}>
-          <PiCheckFatFill style={{ color: 'orange' }} />
+          <PiCheckFatFill style={{ color: "orange" }} />
         </ControlButton>
       ) : (
         <ControlButton onClick={handleShow} title={name}>
-          <PiUploadSimpleBold style={{ color: 'orange' }} />
+          <PiUploadSimpleBold style={{ color: "orange" }} />
         </ControlButton>
       )}
 
