@@ -53,14 +53,24 @@ export default function AccessedByEdge({
               {data.fromCardinality} to {data.toCardinality}
             </div>
           )}
-          <button
-            className="edgeaccessedby"
-            onClick={() => onEdgeClick(id)}
-            onMouseEnter={() => setIsShown(true)}
-            onMouseLeave={() => setIsShown(false)}
-          >
-            ACCESSED_BY
-          </button>
+          {data.valid === true ? (
+            <button
+              className="edgeaccessedby"
+              onClick={() => onEdgeClick(id)}
+              onMouseEnter={() => setIsShown(true)}
+              onMouseLeave={() => setIsShown(false)}
+            >
+              ACCESSED_BY
+            </button>
+          ) : (
+            <button
+              className="edgeaccessedby"
+              style={{ background: "#F05941" }}
+              onClick={() => onEdgeClick(id)}
+            >
+              ACCESSED_BY
+            </button>
+          )}
         </div>
       </EdgeLabelRenderer>
     </>

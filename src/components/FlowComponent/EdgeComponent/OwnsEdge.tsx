@@ -54,14 +54,25 @@ export default function OwnsEdge({
               {data.fromCardinality} to {data.toCardinality}
             </div>
           )}
-          <button
-            className="edgeowns"
-            onClick={() => onEdgeClick(id)}
-            onMouseEnter={() => setIsShown(true)}
-            onMouseLeave={() => setIsShown(false)}
-          >
-            OWNS
-          </button>
+
+          {data.valid === true ? (
+            <button
+              className="edgeowns"
+              onClick={() => onEdgeClick(id)}
+              onMouseEnter={() => setIsShown(true)}
+              onMouseLeave={() => setIsShown(false)}
+            >
+              OWNS
+            </button>
+          ) : (
+            <button
+              className="edgeowns"
+              style={{ background: "#F05941" }}
+              onClick={() => onEdgeClick(id)}
+            >
+              OWNS
+            </button>
+          )}
         </div>
       </EdgeLabelRenderer>
     </>

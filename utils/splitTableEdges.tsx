@@ -1,18 +1,22 @@
-import { getCoords } from "./interface.js"
+import { getCoords } from "./interface.js";
 
 const splitTablesEdges = function (parsedObjects) {
   var canvasWidth = 1000;
   var canvasHeight = 500;
-  let [modifiedObjects, coordsMap] = getCoords(parsedObjects, canvasWidth, canvasHeight)
-  let dataSubjects: any[] = [];
-  let otherTables: any[] = [];
+  let [modifiedObjects, coordsMap] = getCoords(
+    parsedObjects,
+    canvasWidth,
+    canvasHeight
+  );
+  let dataSubjects = new Map(); // tableName: is a valid node or not
+  let otherTables = new Map(); // tableName: is a valid node or not
 
   //storing edge objects. ex: {annotation: 'owned_by', from: 'stories', to: 'user', edgeName: 'author'}
   let edges: any[] = [];
 
   for (const row of modifiedObjects) {
     if (row.annotation === "data_subject") {
-      dataSubjects.push(row.tableName);
+      dataSubjects.set(row.tableName, row.hasOwnProperty("errorMsg")) 
     } else {
       edges.push(row);
     }
@@ -20,25 +24,31 @@ const splitTablesEdges = function (parsedObjects) {
 
   for (const row of modifiedObjects) {
     if (row.annotation !== "data_subject") {
-      if (!dataSubjects.includes(row.from) && !otherTables.includes(row.from)) {
-        otherTables.push(row.from);
+      if (!dataSubjects.has(row.from) && !otherTables.has(row.from)) {
+        otherTables.set(row.from, row.hasOwnProperty("errorMsg"))
       }
-      if (!dataSubjects.includes(row.to) && !otherTables.includes(row.to)) {
-        otherTables.push(row.to);
+      if (!dataSubjects.has(row.to) && !otherTables.has(row.to)) {
+        otherTables.set(row.to, row.hasOwnProperty("errorMsg"))
       }
     }
   }
+  console.log(dataSubjects)
 
   let dsRes: any[] = [];
   let otRes: any[] = [];
   for (const [key, value] of Object.entries(coordsMap)) {
-    if (dataSubjects.includes(key)) {
-      dsRes.push(value);
+    if (dataSubjects.has(key)) {
+      if (dataSubjects.get(key)) {
+        value.errorMsg = "error";
+      }
+      dsRes.push(value)
     } else {
+      if (otherTables.get(key)) {
+        value.errorMsg = "error";
+      }
       otRes.push(value);
     }
   }
-
   return [dsRes, otRes, edges];
 };
 

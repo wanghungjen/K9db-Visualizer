@@ -12,7 +12,12 @@ export default function DataSubjectNode({ data }: NodeProps) {
         style={{ background: "transparent", border: "transparent" }}
         isConnectable={false}
       />
-      <div className="datasubjectnode">{data.label}</div>
+      {data.valid === true ? (
+        <div className="datasubjectnode">{data.label} </div>
+      ) : (
+        <div className="datasubjectnode"  style={{background:"#F05941"}}>{data.label} </div>
+      )}
+
       <Handle
         type="target"
         position={Position.Bottom}

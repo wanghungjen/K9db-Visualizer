@@ -16,7 +16,6 @@ const MyControlButton = ({ name, handleParsedSchema, handleStateChange }) => {
   const handleSubmit = () => {
     setShow(false);
     let parsedSchema = parse(schema.content);
-    console.log(schema, parsedSchema);
     handleParsedSchema(parsedSchema);
     let splitRes = splitTablesEdges(parsedSchema);
     handleStateChange(splitRes[0], splitRes[1], splitRes[2]);
@@ -25,28 +24,29 @@ const MyControlButton = ({ name, handleParsedSchema, handleStateChange }) => {
   return (
     <div>
       {name === "validation" ? (
-        <ControlButton onClick={handleShow} title={name}>
-          <PiCheckFatFill style={{ color: "orange" }} />
-        </ControlButton>
+        // <ControlButton onClick={handleShow} title={name}>
+        //   <PiCheckFatFill style={{ color: "orange" }} />
+        // </ControlButton>
+        <></>
       ) : (
         <ControlButton onClick={handleShow} title={name}>
           <PiUploadSimpleBold style={{ color: "orange" }} />
         </ControlButton>
       )}
-
       {name === "validation" ? (
-        <MyModal
-          show={show}
-          onHide={handleClose}
-          content={
-            "hi. Your schema is invalid. Please check the following edges"
-          }
-          title={"Validation"}
-          schema={schema}
-          handleSchema={handleSchema}
-          useSchema={false}
-        />
+        <></>
       ) : (
+        // <MyModal
+        //   show={show}
+        //   onHide={handleClose}
+        //   content={
+        //     "Oops. Your schema is invalid. Please check the highlighted red edges and nodes"
+        //   }
+        //   title={"Validation"}
+        //   schema={schema}
+        //   handleSchema={handleSchema}
+        //   useSchema={false}
+        // />
         <MyModal
           schema={schema}
           show={show}
