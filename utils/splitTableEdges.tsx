@@ -1,13 +1,15 @@
-import { getCoords } from "./interface.js";
+import { getObjectsAndCoords } from "./interface.js";
 
-const splitTablesEdges = function (parsedObjects) {
+const splitTablesEdges = function (schema) {
   var canvasWidth = 1000;
   var canvasHeight = 500;
-  let [modifiedObjects, coordsMap] = getCoords(
-    parsedObjects,
+  let [modifiedObjects, coordsMap] = getObjectsAndCoords(
+    schema,
     canvasWidth,
     canvasHeight
   );
+  console.log(modifiedObjects)
+  console.log(coordsMap)
   let dataSubjects = new Map(); // tableName: is a valid node or not
   let otherTables = new Map(); // tableName: is a valid node or not
 
@@ -17,22 +19,12 @@ const splitTablesEdges = function (parsedObjects) {
   for (const row of modifiedObjects) {
     if (row.annotation === "data_subject") {
       dataSubjects.set(row.tableName, row.hasOwnProperty("errorMsg")) 
-    } else {
+    } else if (row.annotation === "non_data_subject"){
+      otherTables.set(row.tableName, row.hasOwnProperty("errorMsg"))
+    } else{
       edges.push(row);
     }
   }
-
-  for (const row of modifiedObjects) {
-    if (row.annotation !== "data_subject") {
-      if (!dataSubjects.has(row.from) && !otherTables.has(row.from)) {
-        otherTables.set(row.from, row.hasOwnProperty("errorMsg"))
-      }
-      if (!dataSubjects.has(row.to) && !otherTables.has(row.to)) {
-        otherTables.set(row.to, row.hasOwnProperty("errorMsg"))
-      }
-    }
-  }
-  console.log(dataSubjects)
 
   let dsRes: any[] = [];
   let otRes: any[] = [];

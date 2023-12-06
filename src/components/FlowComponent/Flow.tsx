@@ -31,6 +31,9 @@ const nodeTypes = {
 
 const Flow = ({
   handleParsedSchema,
+  setDatasubject,
+  setOtherTables,
+  setEEdges,
   parsedDataSubject,
   parsedEdges,
   parsedOtherTables,
@@ -43,6 +46,9 @@ const Flow = ({
   const handleStateChange = (dataSubject, otherTables, edges) => {
     setNodes(Nodes(dataSubject, otherTables));
     setEdges(Edges(edges));
+    setDatasubject(dataSubject);
+    setOtherTables(otherTables);
+    setEEdges(edges);
   };
 
   return (

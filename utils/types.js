@@ -1,5 +1,6 @@
 export const Annotations = {
     DataSubject: "data_subject",
+    NonDataSubject: "non_data_subject",
     OwnedBy: "owned_by",
     AccessedBy: "accessed_by",
     Owns: "owns",
@@ -16,11 +17,18 @@ export const InvalidGraphTypes = Object.freeze({
 })
 
 export function isEdgeObject(object) {
-    return object.annotation !== Annotations.DataSubject
+    let edgeAnnotations = [Annotations.OwnedBy, Annotations.AccessedBy, 
+                            Annotations.Owns, Annotations.Accesses]
+    return edgeAnnotations.includes(object.annotation)
 }
 
 export function isDataSubject(object) {
     return object.annotation === Annotations.DataSubject
+}
+
+export function isNodeObject(object) {
+    let nodeAnnotations = [Annotations.NonDataSubject, Annotations.DataSubject]
+    return nodeAnnotations.includes(object.annotation)
 }
 
 // check if an edge is a problematic edge
