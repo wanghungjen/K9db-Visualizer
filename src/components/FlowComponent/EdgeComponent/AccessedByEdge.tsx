@@ -31,6 +31,8 @@ export default function AccessedByEdge({
 
   const [path, labelX, labelY] = getSpecialPath(edgePathParams, data.offset);
   const [isShown, setIsShown] = useState(false);
+  const [errorShown, setErrorShown] = useState(false);
+
   return (
     <>
       <BaseEdge path={path} markerEnd={markerEnd} style={style} />
@@ -53,6 +55,8 @@ export default function AccessedByEdge({
               {data.fromCardinality} to {data.toCardinality}
             </div>
           )}
+          {errorShown && <div className="popup">{data.error}</div>}
+
           {data.valid === true ? (
             <button
               className="edgeaccessedby"
@@ -67,6 +71,8 @@ export default function AccessedByEdge({
               className="edgeaccessedby"
               style={{ background: "#F05941" }}
               onClick={() => onEdgeClick(id)}
+              onMouseEnter={() => setErrorShown(true)}
+              onMouseLeave={() => setErrorShown(false)}
             >
               ACCESSED_BY
             </button>

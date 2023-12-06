@@ -30,6 +30,7 @@ export default function OwnedByEdge({
 
   const [path, labelX, labelY] = getSpecialPath(edgePathParams, data.offset);
   const [isShown, setIsShown] = useState(false);
+  const [errorShown, setErrorShown] = useState(false);
 
   return (
     <>
@@ -53,6 +54,7 @@ export default function OwnedByEdge({
               {data.fromCardinality} to {data.toCardinality}
             </div>
           )}
+          {errorShown && <div className="popup">{data.error}</div>}
 
           {data.valid === true ? (
             <button
@@ -68,6 +70,8 @@ export default function OwnedByEdge({
               className="edgeownedby"
               style={{ background: "#F05941" }}
               onClick={() => onEdgeClick(id)}
+              onMouseEnter={() => setErrorShown(true)}
+              onMouseLeave={() => setErrorShown(false)}
             >
               OWNED_BY
             </button>

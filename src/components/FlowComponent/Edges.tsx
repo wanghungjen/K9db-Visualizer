@@ -70,7 +70,12 @@ export const initEdges = [
     targetHandle: "own",
     markerEnd: markerEnd,
     style: edgeStyle,
-    data: { offset: -60, fromCardinality: "n", toCardinality: "1" , valid: true},
+    data: {
+      offset: -60,
+      fromCardinality: "n",
+      toCardinality: "1",
+      valid: true,
+    },
   },
   {
     id: "edges-e1-2-2",
@@ -81,7 +86,7 @@ export const initEdges = [
     targetHandle: "own",
     markerEnd: markerEnd,
     style: edgeStyle,
-    data: { offset: 60, fromCardinality: "n", toCardinality: "1" ,  valid: true},
+    data: { offset: 60, fromCardinality: "n", toCardinality: "1", valid: true },
   },
   {
     id: "edges-e2-2a",
@@ -92,7 +97,12 @@ export const initEdges = [
     type: "ownedbyedge",
     markerEnd: markerEnd,
     style: edgeStyle,
-    data: { offset: -60, fromCardinality: "n", toCardinality: "1" ,  valid: true},
+    data: {
+      offset: -60,
+      fromCardinality: "n",
+      toCardinality: "1",
+      valid: true,
+    },
   },
   {
     id: "edges-e2-3",
@@ -103,7 +113,12 @@ export const initEdges = [
     type: "accessesedge",
     markerEnd: markerEnd,
     style: edgeStyle,
-    data: { offset: -60, fromCardinality: "n", toCardinality: "1" ,  valid: true},
+    data: {
+      offset: -60,
+      fromCardinality: "n",
+      toCardinality: "1",
+      valid: true,
+    },
   },
   {
     id: "edges-e3-4",
@@ -114,7 +129,7 @@ export const initEdges = [
     type: "accessedbyedge",
     markerEnd: markerEnd,
     style: edgeStyle,
-    data: { offset: 30, fromCardinality: "n", toCardinality: "1" ,  valid: true},
+    data: { offset: 30, fromCardinality: "n", toCardinality: "1", valid: true },
   },
 ];
 
@@ -152,7 +167,8 @@ const Edges = function (edges: any[]) {
           offset: posOffsets[i],
           fromCardinality: e.fromCardinality,
           toCardinality: e.toCardinality,
-          valid: !e.hasOwnProperty('errorMsg'),
+          valid: !e.hasOwnProperty("errorMsg"),
+          error: e.errorMsg,
         },
       });
     }
