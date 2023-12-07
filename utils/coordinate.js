@@ -1,10 +1,45 @@
 import { InvalidGraphTypes, hasErrorMsg, isEdgeObject } from "./types.js"
-import { topoSort, getGraphFromObjects } from './graph.js';
+import { getGraph, getReverseDependencyGraph, getGraphFromObjects } from './graph.js';
 
+// we need a special ordering for calculating coordinates
+// this topological sort is different from the topoSort function in the graph.js
+function topoSortForPositioning(parsedObjects) {
+    let dependencyGraph = getReverseDependencyGraph(parsedObjects)
+    let G = getGraph(dependencyGraph)
+
+    // 2. get all nodes that have zero dependencies
+    var q = []
+    for (const node in dependencyGraph) {
+        if (dependencyGraph[node].size === 0) {
+            q.push(node)
+        }
+    }
+
+    // 3. use Khan's algorithm to construct the result array
+    const res = []
+    var processedNodeCt = 0
+    while (q.length > 0) {
+        var nextQ = []
+        for (const curr of q) {
+            processedNodeCt++
+            for (const neighbor of G[curr]) {
+                dependencyGraph[neighbor].delete(curr)
+                if (dependencyGraph[neighbor].size === 0) {
+                    nextQ.push(neighbor)
+                }
+            }
+        }
+        res.push(q)
+        q = nextQ
+    }
+    // 4. returns processed node in topological order; 
+    // If there's a cycle, only return nodes that are not in the cycle
+    return res
+}
 
 // when the graph is valid, arrange nodes level by level
 function getValidGraphCoords(objects, canvasW, canvasH) {
-    let sortedNodes = topoSort(objects).reverse()
+    let sortedNodes = topoSortForPositioning(objects)
     // calculate the height assigned to each level
     var heightPerLevel = canvasH / sortedNodes.length
 
@@ -54,7 +89,7 @@ function getCycleGraphCoords(objects, canvasW, canvasH) {
             cycleNodes.push(currObj.from)
             currObj = nameObjMap[currObj.to]
 
-        } while (currObj.from !== firstCycleObj.from) 
+        } while (currObj.from !== firstCycleObj.from)
 
         return [nonCycleNodes, cycleNodes]
     }

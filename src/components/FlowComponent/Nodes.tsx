@@ -46,7 +46,7 @@ const Nodes = function (dataSubject: any[], otherTables: any[]) {
         valid: !sub.hasOwnProperty('errorMsg'),
       },
       position: { x: sub.posX, y: sub.posY },
-      draggable: false,
+      draggable: true,
     });
   }
 
@@ -59,7 +59,7 @@ const Nodes = function (dataSubject: any[], otherTables: any[]) {
         valid: !sub.hasOwnProperty('errorMsg'),
       },
       position: { x: sub.posX, y: sub.posY },
-      draggable: false,
+      draggable: true,
     });
   }
   return ret;

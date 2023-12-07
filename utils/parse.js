@@ -9,7 +9,8 @@ function getSanitizedStatements(inputStr) {
     let sanitized = []
     for (let statement of statements) {
         statement = statement.toLowerCase()
-        if (statement.includes("create")) {
+        if (statement.includes("create table") ||
+            statement.includes("create data_subject")) {
             // remove extra spaces and tabs
             statement = statement.replace(/[\n\t\r]/g, '')
             sanitized.push(statement)

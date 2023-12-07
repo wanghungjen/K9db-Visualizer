@@ -17,7 +17,7 @@ function detectCycle(parsedObjects) {
         if (isEdgeObject(obj)) {
             fromNodeMap[obj.from] = obj
         } else {
-            // non edge objects will be added to the result 
+            // non-edge objects will be added to the result 
             resObjects.push(obj)
         }
     }
@@ -77,10 +77,10 @@ export function validate(parsedObjects) {
     // 2. TODO: Check if there's no data subject
 
     // 3. TODO: Check if there's more than one data subject
-    [hasError, modifiedObjects] = detectMultipleDataSubjects(parsedObjects)
-    if (hasError) {
-        return [InvalidGraphTypes.MultipleDataSubjects, modifiedObjects]
-    }
+    // [hasError, modifiedObjects] = detectMultipleDataSubjects(parsedObjects)
+    // if (hasError) {
+    //     return [InvalidGraphTypes.MultipleDataSubjects, modifiedObjects]
+    // }
 
     // 4. TODO: Check if all edges flow to the data subject
 
