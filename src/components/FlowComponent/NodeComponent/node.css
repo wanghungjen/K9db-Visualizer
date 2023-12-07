@@ -1,42 +1,60 @@
 .react-flow__node-datasubjectnode {
-    text-align: center;
-    border: 1.7px solid #423E37;
-    padding: 5px;
-    border-radius: 4px;
-    font-size: 14px;
-    font-family: "Gill Sans", sans-serif;
-    transition: 200ms;
-    width: fit-content;
-    min-width: 10%;
-    height: fit-content;
-    font-weight: 500;
-    letter-spacing: 1px;
-    text-transform: uppercase;
-    padding: 0.25em 0.5em;
-    box-shadow: 1px 1px 0px 0px #423E37, 2px 2px 0px 0px #423E37, 3px 3px 0px 0px #423E37, 4px 4px 0px 0px #423E37;
+  text-align: center;
+  border: 1.7px solid #423e37;
+  padding: 5px;
+  border-radius: 4px;
+  font-size: 14px;
+  font-family: "Gill Sans", sans-serif;
+  transition: 200ms;
+  width: fit-content;
+  min-width: 10%;
+  height: fit-content;
+  font-weight: 500;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  padding: 0.25em 0.5em;
+  box-shadow: 1px 1px 0px 0px #423e37, 2px 2px 0px 0px #423e37,
+    3px 3px 0px 0px #423e37, 4px 4px 0px 0px #423e37;
 }
 
 .react-flow__node-nondatasubjectnode {
-    text-align: center;
-    padding: 5px;
-    border-radius: 4px;
-    font-size: 14px;
-    font-family: "Gill Sans", sans-serif;
-    transition: 200ms;
-    width: fit-content;
-    min-width: 10%;
-    height: fit-content;
-    font-weight: 500;
-    letter-spacing: 1px;
-    text-transform: uppercase;
-    border: 1.7px solid #423E37;
-    padding: 0.25em 0.5em;
+  text-align: center;
+  padding: 5px;
+  border-radius: 4px;
+  font-size: 14px;
+  font-family: "Gill Sans", sans-serif;
+  transition: 200ms;
+  width: fit-content;
+  min-width: 10%;
+  height: fit-content;
+  font-weight: 500;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  border: 1.7px solid #423e37;
+  padding: 0.25em 0.5em;
 }
 
 .react-flow__node-datasubjectnode:hover {
-    box-shadow: 0 0 2px 2px rgba(50, 49, 49, 0.13);
+  box-shadow: 0 0 2px 2px rgba(50, 49, 49, 0.13);
 }
 
 .react-flow__node-nondatasubjectnode:hover {
-    box-shadow: 0 0 2px 2px rgba(50, 49, 49, 0.13);
+  box-shadow: 0 0 2px 2px rgba(50, 49, 49, 0.13);
+}
+
+.popupp {
+  text-align: center;
+  background-color: white;
+  color: black;
+  border-radius: 10px;
+  justify-content: center;
+  box-sizing: border-box;
+  width: 100%;
+  font-weight: 500;
+  font-size: 10px;
+  border: 1.2px solid #cbc3e3;
+}
+
+.wrapper {
+  display: inline-grid;
 }
