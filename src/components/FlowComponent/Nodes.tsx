@@ -52,10 +52,11 @@ const initNodes = [
 ];
 
 const Nodes = function (dataSubject: any[], otherTables: any[]) {
-  if (dataSubject.length === 0) {
+  if (dataSubject.length === 0 && otherTables.length === 0) {
     return initNodes;
   }
 
+  console.log(dataSubject)
   let ret: any[] = [];
   for (const sub of dataSubject) {
     console.log(sub.warningMsg);
@@ -85,6 +86,7 @@ const Nodes = function (dataSubject: any[], otherTables: any[]) {
       draggable: true,
     });
   }
+  console.log(ret)
   return ret;
 };
 
