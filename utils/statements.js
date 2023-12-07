@@ -142,16 +142,53 @@ export const multipleDataSubjects2 = `
         c1 INT NOT NULL
     );
 `
-export const sussyStatement = `
-CREATE DATA_SUBJECT TABLE A (
-    username INT PRIMARY KEY,
-    lastname INT NOT NULL OWNED_BY B(id)
-);
-CREATE TABLE B (
-    last_name INT PRIMARY KEY,
-    b1 INT NOT NULL OWNED_BY A(id)
-);
 
+// A -> B -> C
+export const noDataSubject1 = `
+  CREATE TABLE A (
+    id INT PRIMARY KEY,
+    a1 INT NOT NULL OWNED_BY B(id)
+  );
+  CREATE TABLE B (
+    id INT PRIMARY KEY,
+    b1 INT NOT NULL OWNED_BY C(id)
+  );
+  CREATE TABLE C (
+    id INT PRIMARY KEY,
+    c1 INT NOT NULL
+  );
+`
+
+// A -> B; C -> D (DataSubject)
+export const noDataSubject2 = `
+  CREATE TABLE A (
+    id INT PRIMARY KEY,
+    a1 INT NOT NULL OWNED_BY B(id)
+  );
+  CREATE TABLE B (
+    id INT PRIMARY KEY,
+    b1 INT NOT NULL
+  );
+  CREATE TABLE C (
+    id INT PRIMARY KEY,
+    c1 INT NOT NULL OWNED_BY D(id)
+  );
+  CREATE DATA_SUBJECT TABLE D (
+    id INT PRIMARY KEY,
+    d1 INT NOT NULL
+  );
+`
+
+export const sussyStatement = `
+  CREATE DATA_SUBJECT TABLE A (
+      username INT PRIMARY KEY,
+      lastname INT NOT NULL OWNED_BY B(id)
+  );
+  CREATE TABLE B (
+      last_name INT PRIMARY KEY,
+      b1 INT NOT NULL OWNED_BY A(id)
+  );
+`
 
 export const lobsterCompleteSchema = `
 CREATE DATA_SUBJECT TABLE users (

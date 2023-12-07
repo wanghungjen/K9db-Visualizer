@@ -11,9 +11,7 @@ export const Annotations = {
 export const InvalidGraphTypes = Object.freeze({
     None: "None",
     Cycle: "Cycle",
-    NoDataSubject: "NoDataSubject",
-    MultipleDataSubjects: "MultipleDataSubjects",
-    DataSubjectOutEdge: "DataSubjectOutEdge"
+    NonDataSubjectEdge: "NonDataSubjectEdge",
 })
 
 export function isEdgeObject(object) {

@@ -1,4 +1,4 @@
-import { getAllNodes, topoSort } from './graph.js';
+import { getAllNodes, getDependencyGraph, topoSort } from './graph.js';
 import { isEdgeObject, InvalidGraphTypes, isDataSubject } from "./types.js"
 
 /* Detect if there's a cycle in the graph. If there's a cycle,
@@ -45,25 +45,43 @@ function detectCycle(parsedObjects) {
     return [hasCycle, resObjects]
 }
 
-function detectMultipleDataSubjects(parsedObjects) {
-    let dataSubjectCt = 0
+// edges that don't eventually flow to a data subject are invalid
+function detectInvalidEdges(parsedObjects) {
+    let dataSubjectNodes = new Set()
     for (const obj of parsedObjects) {
         if (isDataSubject(obj)) {
-            dataSubjectCt++
+            dataSubjectNodes.add(obj.tableName)
         }
     }
-    if (dataSubjectCt === 1) {
-        return [false, parsedObjects]
-    } else {
-        for (let i = 0; i < parsedObjects.length; i++) {
-            if (isDataSubject(parsedObjects[i])) {
-                parsedObjects[i]["errorMsg"] = "The node is one of multiple data subjects"
+
+    // do a dfs traversal starting from each data subject node to find out
+    // which nodes can eventually reach to a data subject node
+    let visited = new Set()
+    let dependencyGraph = getDependencyGraph(parsedObjects)
+    function dfs(curr) {
+        visited.add(curr)
+        for (const neighbor of dependencyGraph[curr]) {
+            if (!visited.has(neighbor)) {
+                dfs(neighbor)
             }
         }
-        return [true, parsedObjects]
     }
-    
+    for (const node of dataSubjectNodes) {
+        if (!visited.has(node)) {
+            dfs(node)
+        }
+    }
+    // iterate through all edges and check if the to table is a visited node
+    let hasInvalidEdge = false
+    for (let obj of parsedObjects) {
+        if (isEdgeObject(obj) && !visited.has(obj.to)) {
+            hasInvalidEdge = true
+            obj["errorMsg"] = "This edge doesn't eventually point to a data subject node"
+        }
+    }
+    return [hasInvalidEdge, parsedObjects]
 }
+
 
 // Given a list of parsed objects (edge objects and node objects)
 // return a list of objects with potential error messages added to the objects
@@ -74,15 +92,11 @@ export function validate(parsedObjects) {
         return [InvalidGraphTypes.Cycle, modifiedObjects]
     }
 
-    // 2. TODO: Check if there's no data subject
-
-    // 3. TODO: Check if there's more than one data subject
-    // [hasError, modifiedObjects] = detectMultipleDataSubjects(parsedObjects)
-    // if (hasError) {
-    //     return [InvalidGraphTypes.MultipleDataSubjects, modifiedObjects]
-    // }
-
-    // 4. TODO: Check if all edges flow to the data subject
+    // 2. Check if any edge doesn't eventually flow to a data-subject node
+    [hasError, modifiedObjects] = detectInvalidEdges(parsedObjects)
+    if (hasError) {
+        return [InvalidGraphTypes.NonDataSubjectEdge, modifiedObjects]
+    }
 
     // no error; original parsedObjects are returned
     return [InvalidGraphTypes.None, parsedObjects]

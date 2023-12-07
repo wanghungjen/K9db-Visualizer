@@ -135,7 +135,7 @@ export function calculateCoordinates(invalidType, objects, canvasW, canvasH) {
     // check invalid type and decide how to place nodes accordingly
     switch(invalidType) {
         case InvalidGraphTypes.None:
-        case InvalidGraphTypes.MultipleDataSubjects:
+        case InvalidGraphTypes.NonDataSubjectEdge:
         // as long as there are no cycles, it's fine to calculate coordinates as if the graph is valid
             return getValidGraphCoords(objects, canvasW, canvasH)
         case InvalidGraphTypes.Cycle:
