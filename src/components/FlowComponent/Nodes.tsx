@@ -64,6 +64,7 @@ const Nodes = function (dataSubject: any[], otherTables: any[]) {
       data: {
         label: sub.tableName,
         valid: !sub.hasOwnProperty("errorMsg"),
+        warningMsg: sub.warningMsg
       },
       position: { x: sub.posX, y: sub.posY },
       draggable: false,
@@ -77,6 +78,7 @@ const Nodes = function (dataSubject: any[], otherTables: any[]) {
       data: {
         label: sub.tableName,
         valid: !sub.hasOwnProperty("errorMsg"),
+        warningMsg: sub.warningMsg
       },
       position: { x: sub.posX, y: sub.posY },
       draggable: false,

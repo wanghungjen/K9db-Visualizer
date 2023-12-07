@@ -1,3 +1,4 @@
+import { getSussyColumns } from "./suggestion.js"
 import { Annotations } from "./types.js"
 
 // Given an array of SQL create statements as an input string,
@@ -21,7 +22,7 @@ function getSanitizedStatements(inputStr) {
 
 // Given a create statement, extract text between the first '(' and the last ')'
 // split the text by comma into a list of sentences
-function parseSentences(statement) {
+export function parseSentences(statement) {
     let firstParenIdx = statement.indexOf('(')
     let lastParenIdx = statement.lastIndexOf(')')
     if (firstParenIdx === -1 || lastParenIdx === -1 ||
@@ -141,7 +142,14 @@ function parseCreateStatement(statement, pkMap) {
     if (statement.includes(Annotations.DataSubject)) {
         res.push({
             annotation: "data_subject",
-            tableName: tableName
+            tableName: tableName,
+            warningMsg: getSussyColumns(statement)
+        })
+    } else {
+        res.push({
+            annotation: "non_data_subject",
+            tableName: tableName,
+            warningMsg: getSussyColumns(statement)
         })
     }
 
