@@ -5,7 +5,7 @@ const initNodes = [
     data: {
       label: "example_data_subject",
       valid: true,
-      warningMsg: ["name", "email"],
+      warningMsg: ["name"],
     },
     position: { x: 250, y: 0 },
   },
@@ -58,13 +58,14 @@ const Nodes = function (dataSubject: any[], otherTables: any[]) {
 
   let ret: any[] = [];
   for (const sub of dataSubject) {
+    console.log(sub.warningMsg);
     ret.push({
       id: sub.tableName,
       type: "datasubjectnode",
       data: {
         label: sub.tableName,
         valid: !sub.hasOwnProperty("errorMsg"),
-        warningMsg: sub.warningMsg
+        warningMsg: sub.warningMsg,
       },
       position: { x: sub.posX, y: sub.posY },
       draggable: false,
@@ -78,7 +79,7 @@ const Nodes = function (dataSubject: any[], otherTables: any[]) {
       data: {
         label: sub.tableName,
         valid: !sub.hasOwnProperty("errorMsg"),
-        warningMsg: sub.warningMsg
+        warningMsg: sub.warningMsg,
       },
       position: { x: sub.posX, y: sub.posY },
       draggable: false,
