@@ -6,18 +6,19 @@ import { Annotations } from "./types.js"
 // extra spaces/tabs are removed and all charactes are lowered
 function getSanitizedStatements(inputStr) {
     // split the input string by the `CREATE` keyword into an array of sentences
+    var tableRegex = /(create\s+table)\s+/g;
+    var dsRegex = /(create\s+data_subject)\s+/g;;
     let statements = inputStr.trim().split(/(?=CREATE)/)
     let sanitized = []
     for (let statement of statements) {
         statement = statement.toLowerCase()
-        if (statement.includes("create table") ||
-            statement.includes("create data_subject")) {
+            if (tableRegex.test(statement) || dsRegex.test(statement)){
             // remove extra spaces and tabs
-            statement = statement.replace(/[\n\t\r]/g, '')
+            statement = statement.replace(tableRegex, '$1 ')
+            statement = statement.replace(dsRegex, '$1 ')
             sanitized.push(statement)
         }
     }
-
     return sanitized
 }
 
