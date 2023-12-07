@@ -1,10 +1,15 @@
-import React from "react";
+import React, { useState } from "react";
 import { Handle, NodeProps, Position } from "reactflow";
 import "./node.css";
 
 export default function DataSubjectNode({ data }: NodeProps) {
+  const [isShown, setIsShown] = useState(false);
+
   return (
-    <>
+    <div
+      onMouseEnter={() => setIsShown(true)}
+      onMouseLeave={() => setIsShown(false)}
+    >
       <Handle
         id="own"
         type="source"
@@ -12,11 +17,22 @@ export default function DataSubjectNode({ data }: NodeProps) {
         style={{ background: "transparent", border: "transparent" }}
         isConnectable={false}
       />
-      {data.valid === true ? (
-        <div className="datasubjectnode">{data.label} </div>
-      ) : (
-        <div className="datasubjectnode"  style={{background:"#F05941"}}>{data.label} </div>
-      )}
+      <div className="wrapper">
+        {data.valid === true ? (
+          <div className="datasubjectnode">{data.label} </div>
+        ) : (
+          <div className="datasubjectnode" style={{ background: "#F05941" }}>
+            {data.label}{" "}
+          </div>
+        )}
+        {isShown && (
+          <div className="popupp">
+            {data.warningMsg.map((x) => (
+              <div>{x}</div>
+            ))}
+          </div>
+        )}
+      </div>
 
       <Handle
         type="target"
@@ -24,6 +40,6 @@ export default function DataSubjectNode({ data }: NodeProps) {
         style={{ background: "transparent", border: "transparent" }}
         isConnectable={false}
       />
-    </>
+    </div>
   );
 }

@@ -18,9 +18,9 @@ const splitTablesEdges = function (schema) {
 
   for (const row of modifiedObjects) {
     if (row.annotation === "data_subject") {
-      dataSubjects.set(row.tableName, row.hasOwnProperty("errorMsg")) 
+      dataSubjects.set(row.tableName, [row.hasOwnProperty("errorMsg"), row.warningMsg]) 
     } else if (row.annotation === "non_data_subject"){
-      otherTables.set(row.tableName, row.hasOwnProperty("errorMsg"))
+      otherTables.set(row.tableName, [row.hasOwnProperty("errorMsg"), row.warningMsg])
     } else{
       edges.push(row);
     }
@@ -30,14 +30,16 @@ const splitTablesEdges = function (schema) {
   let otRes: any[] = [];
   for (const [key, value] of Object.entries(coordsMap)) {
     if (dataSubjects.has(key)) {
-      if (dataSubjects.get(key)) {
+      if (dataSubjects.get(key)[0]) {
         value.errorMsg = "error";
       }
+      value.warningMsg = dataSubjects.get(key)[1]
       dsRes.push(value)
     } else {
-      if (otherTables.get(key)) {
+      if (otherTables.get(key)[0]) {
         value.errorMsg = "error";
       }
+      value.warningMsg = otherTables.get(key)[1]
       otRes.push(value);
     }
   }
